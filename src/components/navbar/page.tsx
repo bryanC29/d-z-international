@@ -62,7 +62,7 @@ const Navbar = () => {
           className={`md:block w-full md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}
           id="navbar-multi-level"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-gray-800 md:bg-gray-900 border-gray-700">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-stone-800 md:bg-stone-900 border-gray-700">
             <li>
               <Link
                 href="/"
