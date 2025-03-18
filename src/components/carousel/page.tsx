@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import { autocompleteClasses } from "@mui/material";
 
 const images = [
-    "/darkndusky.png",
-    "/darkndusky.png",
-    "/darkndusky.png",
+    "/xyz (1).jpeg",
+    "/xyz (2).jpeg",
+    "/xyz (3).jpeg",
+    "/xyz (4).jpeg",
+
 ];
 
 const Carousel = () => {
@@ -29,9 +32,7 @@ const Carousel = () => {
 
     return (
         <div>
-            <p>carousel</p>
-
-            <div className="">
+            <div className=" object-cover">
                 {images.map((item, index) =>
                     current === index && (
                         <Image
@@ -39,8 +40,8 @@ const Carousel = () => {
                             src={item}
                             className="h-8"
                             alt="Dark & Dusky Logo"
-                            width={400}
-                            height={35}
+                            width={450}
+                            height={0}
                         />
                     )
                 )}
