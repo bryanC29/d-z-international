@@ -32,16 +32,16 @@ const Carousel = () => {
 
     return (
         <div>
-            <div className=" object-cover">
+            <div className='h-[80vh]'>
                 {images.map((item, index) =>
                     current === index && (
                         <Image
                             key={index}
                             src={item}
-                            className="h-8"
+                            className="h-[100%] rounded-l-md"
                             alt="Dark & Dusky Logo"
                             width={450}
-                            height={0}
+                            height={500}
                         />
                     )
                 )}

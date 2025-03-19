@@ -1,12 +1,15 @@
 import Link from "next/link"
+import Carousel_signin from "@/components/carousel_signin/page"
 
 export default function(){
     return(
         <>
         <div className="bg-neutral-800 flex justify-center items-center">
-            <div className="bg-red-700 md:w-[60%] w-[90%] my-10 flex items-center justify-center rounded-2xl shadow-lg">
-                <div className="bg-orange-200 p-4 w-full hidden md:inline-block"></div>
-                <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:rounded-l-none">
+            <div className="bg-red-700 md:w-[60%] w-[90%] my-10 flex items-center justify-center rounded-2xl shadow-lg md:h-[110vh]">
+                <div className="bg-orange-200 w-full hidden rounded-l-md h-[110vh] md:inline-block">
+                    <Carousel_signin/>
+                </div>
+                <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:h-[110vh] md:rounded-l-none flex flex-col justify-center ">
                     <p className="text-3xl text-center font-bold py-10 pt-5 text-white">Sign In</p>
                     <form className="pb-5" action="">
                         <label className="block text-lg text-white" id="name" htmlFor="">Name:</label>
@@ -24,7 +27,7 @@ export default function(){
                         <button className="bg-slate-700 rounded-md mb-6 px-3 py-1 block w-full text-lg text-white border-white hover:bg-slate-800" type="submit">Register</button>
                         <hr className="m-4"></hr>
                         {/* <Link href="/signin"className="bg-black rounded-md  px-3 py-1 mb-7 block w-full text-white text-lg border-2 border-white hover:text-black hover:bg-white" type="submit">Register</Link> */}
-                        <p className="text-white text-center text-lg">Already a user ? | <Link href="/login" className="underline">Login In</Link></p>
+                        <p className="text-white text-center text-lg">Already a user? | <Link href="/login" className="underline italic">Login In</Link></p>
                     </form>
                 </div>
             </div>
