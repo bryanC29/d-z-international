@@ -5,8 +5,8 @@ export default function(){
     return(
         <>
         <div className="bg-neutral-800 flex justify-center items-center">
-            <div className="bg-red-700 md:w-[60%] w-[90%] my-10 flex items-center justify-center rounded-2xl shadow-lg md:h-[110vh]">
-                <div className="bg-orange-200 w-full hidden rounded-l-md h-[110vh] md:inline-block">
+            <div className="md:w-[60%] w-[90%] my-10 flex items-center justify-center rounded-2xl shadow-lg md:h-[110vh]">
+                <div className="w-full hidden rounded-l-md h-[110vh] md:inline-block">
                     <Carousel_signin/>
                 </div>
                 <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:h-[110vh] md:rounded-l-none flex flex-col justify-center ">

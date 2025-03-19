@@ -5,8 +5,8 @@ export default function Login() {
     return (
         <>
         <div className="bg-neutral-800 flex justify-center items-center">
-            <div className="bg-red-700 md:w-[60%] w-[90%] my-10 flex relative items-center h-[80vh] justify-center rounded-2xl shadow-lg">
-                <div className="bg-orange-200 w-full h-[80vh] rounded-l-md hidden md:inline-block">
+            <div className="md:w-[60%] w-[90%] my-10 flex relative items-center h-[80vh] justify-center rounded-2xl shadow-lg">
+                <div className="w-full h-[80vh] rounded-l-md hidden md:inline-block">
                     <Carousel_login />
                 </div>
                 <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:rounded-l-none h-[80vh] flex flex-col justify-center">

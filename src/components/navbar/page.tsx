@@ -92,6 +92,15 @@ const Navbar = () => {
             </li>
             <li>
               <Link
+                href="/product"
+                className="block py-2 px-3 text-white hover:bg-stone-700 md:hover:bg-transparent rounded-sm md:bg-transparent md:p-0"
+                aria-current="page"
+              >
+                Products
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/contact"
                 className="block py-2 px-3 text-white hover:bg-stone-700 md:hover:bg-transparent rounded-sm md:bg-transparent md:p-0"
                 aria-current="page"

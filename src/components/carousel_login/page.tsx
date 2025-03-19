@@ -38,7 +38,7 @@ const Carousel = () => {
                         <Image
                             key={index}
                             src={item}
-                            className="h-[100%] rounded-l-md"
+                            className="h-[100%] rounded-l-2xl"
                             alt="Dark & Dusky Logo"
                             width={450}
                             height={500}
