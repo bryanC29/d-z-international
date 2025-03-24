@@ -1,7 +1,14 @@
+'use client';
+
 import Link from "next/link"
 import Carousel_login from "@/components/carousel_login/page"
+import { useState } from "react";
+
 
 export default function Login() {
+
+    const [visible,setVisible] = useState(false);
+
     return (
         <>
         <div className="bg-neutral-800 flex justify-center items-center">
@@ -13,9 +20,12 @@ export default function Login() {
                     <p className="text-3xl text-center font-bold py-10 pt-5 text-white">Continue Shopping</p>
                     <form className="pb-4" action="">
                         <label className="block text-lg text-white" id="email" htmlFor="">Email:</label>
-                        <input className="w-full mb-3 border-2 border-black rounded-md p-2" placeholder="john.doe@example.com" type="email" name="email" id="email" />
+                        <input className="w-full mb-3 border-2 border-white rounded-md p-2" placeholder="john.doe@example.com" type="email" name="email" id="email" />
                         <label className="block text-lg text-white" id="password" htmlFor="">Password:</label>
-                        <input className="block w-full mb-5 border-2 border-black rounded-md p-2" placeholder="Password" type="password" name="password" id="password" />
+                        <div className="flex">
+                            <input className="block w-full mb-5 border-t-2 border-l-2 border-b-2 border-white rounded-l-md p-2" placeholder="Password" type={visible ? "text" : "password"} name="password" id="password" />
+                            <button className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white" type="button" onClick= {() => setVisible(!visible)}></button>
+                        </div>
                         <input className="mb-4 mr-2" type="checkbox" name="remember" id="remember" />
                         <label className="text-lg text-white " id="remember" htmlFor="">Remember Me</label>
                         <Link className="block underline mb-5 text-lg text-white italic" href="http://">Forgot Password?</Link>
