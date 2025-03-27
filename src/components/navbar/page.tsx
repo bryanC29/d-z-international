@@ -92,7 +92,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/product"
+                href="/product  "
                 className="block py-2 px-3 text-white hover:bg-stone-700 md:hover:bg-transparent rounded-sm md:bg-transparent md:p-0"
                 aria-current="page"
               >
