@@ -67,10 +67,68 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="luxury">
+      <div className="luxury p-4">
         <p className="text-white text-center text-3xl font-semibold pb-2">
           Luxurious Fineness
         </p>
+
+        <div className="flex flex-col md:flex-row shadow-xl bg-black m-4 text-white rounded-lg">
+          <Image
+            src="/leather-belts.webp"
+            className="rounded-lg"
+            alt=""
+            width={500}
+            height={200}
+          />
+          <div className="p-4">
+            <p className="text-2xl font-bold">Gifts for Him</p>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Inventore doloribus id pariatur facilis qui voluptas ipsum,
+              molestiae, neque earum, repudiandae fugiat atque doloremque. Quas
+              rerum obcaecati, sed ab accusamus quasi id molestias provident
+              aliquid non ducimus dolorum necessitatibus beatae deserunt
+              molestiae veniam expedita cumque laboriosam commodi, aliquam
+            </p>
+            <p className="text-lg my-4">
+              Starting @ <span className="bg-red-600">Rs. 199</span>
+            </p>
+            <Link href="">
+              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black">
+                Shop now
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row shadow-xl bg-black m-4 text-white rounded-lg">
+          <Image
+            src="/women-handbag.jpg"
+            className="rounded-lg"
+            alt=""
+            width={600}
+            height={200}
+          />
+          <div className="p-4">
+            <p className="text-2xl font-bold">Gifts for Her</p>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Inventore doloribus id pariatur facilis qui voluptas ipsum,
+              molestiae, neque earum, repudiandae fugiat atque doloremque. Quas
+              rerum obcaecati, sed ab accusamus quasi id molestias provident
+              aliquid non ducimus dolorum necessitatibus beatae deserunt
+              molestiae veniam expedita cumque laboriosam commodi, aliquam
+            </p>
+            <p className="text-lg my-4">
+              Starting @ <span className="bg-red-600">Rs. 199</span>
+            </p>
+            <Link href="">
+              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black">
+                Shop now
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );
