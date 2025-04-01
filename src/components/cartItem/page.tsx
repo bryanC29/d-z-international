@@ -23,7 +23,7 @@ export default function cartItem({
             src={image}
             alt="Dark & Dusky Logo"
             layout="fill"
-            objectFit="fill" // Ensures the whole image fits inside
+            objectFit="fill"
           />
         </div>
         <div className=" flex flex-col md:flex-row md:gap-14 md:w-[70%]">
