@@ -363,6 +363,22 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className="bg-slate-50 flex flex-col md:flex-row">
+        <div className="flex flex-row">
+          <div className="bg-slate-900 rounded-full h-24 w-24 m-5 ml-14 align-middle items-center flex"></div>
+          <p className="mx-4 text-3xl md:ml-8 font-semibold flex align-middle items-center">
+            EASY RETURN & REFUND POLICY
+          </p>
+        </div>
+        <div className="flex flex-row align-middle justify-center">
+          <button className="w-36 bg-zinc-400 h-16 rounded-lg text-xl font-semibold md:ml-96 m-10">
+            Return
+          </button>
+          <button className="w-36 bg-zinc-400 h-16 rounded-lg text-xl font-semibold m-10">
+            Orders
+          </button>
+        </div>
+      </div>
     </>
   );
 }
