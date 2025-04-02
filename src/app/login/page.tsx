@@ -29,7 +29,7 @@ export default function Login() {
     });
   }, []);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     const emailError = validateEmail(email);
@@ -40,50 +40,16 @@ export default function Login() {
     } else {
       setError({ email: '', password: '', invalid: '' });
       alert('All fields are valid! ✅');
-      handleLogin(e);
-      // Proceed with sign-in logic
+      const data = { email, password };
+      const response = await axios.post(
+        'http://40.1.0.197:3000/auth/login',
+        data
+      );
+      console.log(response.data);
+      console.log(response.status);
+      // in case of response.status === 201 redirect to home page
+      // in case of response.status === 404 show invalid credentials error
     }
-  };
-
-  const handleLogin = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
-    // Check if email and password are filled
-
-    // Set loading state to true while waiting for the response
-    setLoading(true);
-    setError({ email: '', password: '', invalid: '' });
-
-    // Data to be sent in the POST request
-    const loginData = {
-      email: email,
-      password: password,
-    };
-
-    // Your backend API URL for login (adjust accordingly)
-    const apiUrl = 'https://api.example.com/login'; // Replace with your actual API endpoint
-
-    // Make the POST request to the backend
-    axios
-      .post(apiUrl, loginData)
-      .then((response) => {
-        // If login is successful, you can save the token, user info, or redirect
-        console.log('Login successful:', response.data);
-        // You could redirect the user or update the state with the user data
-        // For example: localStorage.setItem('token', response.data.token);
-      })
-      .catch((error) => {
-        // If there's an error, display the error message
-        setError({
-          email: '',
-          password: '',
-          invalid: 'Invalid credentials. Please try again.',
-        });
-        // setError({''});
-      })
-      .finally(() => {
-        setLoading(false); // Set loading to false after the request finishes
-      });
   };
 
   return (
