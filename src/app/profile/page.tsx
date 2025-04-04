@@ -17,29 +17,54 @@ export default function profile() {
           </div>
         </div>
         <div className="bg-neutral-700 h-auto w-[78%]">
-          <div className="m-10 border-2 border-slate-50 h-auto  text-white rounded-xl p-2">
-            <p className="text-center text-3xl mb-2">Basic Info</p>
-            <hr />
-            <p className="m-5 text-xl border rounded-lg p-2">Name: John Doe</p>
-            <p className="m-5 text-xl border rounded-lg p-2">Name: John Doe</p>
-            <p className="m-5 text-xl border rounded-lg p-2">Name: John Doe</p>
-            <p className="m-5 text-xl border rounded-lg p-2">Name: John Doe</p>
+          <div className="bg-white shadow rounded-2xl p-6 space-y-4 m-5 w-[80%]">
+            <h2 className="text-xl font-semibold">User Information</h2>
+            <div className="space-y-1 flex flex-col gap-5">
+              <p>
+                <strong>Name:</strong> John Doe
+              </p>
+              <p>
+                <strong>Email:</strong> john@example.com
+              </p>
+              <p>
+                <strong>Phone:</strong> +1 234 567 890
+              </p>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded ">
+                Change Password
+              </button>
+            </div>
           </div>
-          <div className="m-10 border-2 border-slate-50 h-auto  text-white rounded-xl p-2">
-            <p className="text-center text-3xl mb-2">Contact Info</p>
-            <hr />
-            <p className="m-5 text-xl border rounded-lg p-2">
-              Mobile no.: 9876543210{' '}
-            </p>
-            <p className="m-5 text-xl border rounded-lg p-2">
-              Mobile no.: 9876543210{' '}
-            </p>
-            <p className="m-5 text-xl border rounded-lg p-2">
-              Mobile no.: 9876543210{' '}
-            </p>
-            <p className="m-5 text-xl border rounded-lg p-2">
-              Mobile no.: 9876543210{' '}
-            </p>
+          <div className="bg-white shadow rounded-2xl p-6 space-y-4 m-5 w-[80%]">
+            <h2 className="text-xl font-semibold">Address Book</h2>
+            <div className="space-y-2 flex flex-col gap-5">
+              <p>@ 123 Main St, Springfield</p>
+              <p>@ 456 Elm St, Metropolis</p>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded ">
+                Add New Address
+              </button>
+            </div>
+          </div>
+          <div className="bg-white shadow rounded-2xl p-6 space-y-4 m-5 w-[80%]">
+            <h2 className="text-xl font-semibold">Payment Methods</h2>
+            <div className="space-y-2 flex flex-col gap-5">
+              <p>
+                <strong>Card no. :</strong> **** **** **** 4242 (Visa)
+              </p>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded ">
+                Add New Card
+              </button>
+            </div>
+          </div>
+          <div className="bg-white shadow rounded-2xl p-6 space-y-4 m-5 w-[80%]">
+            <h2 className="text-xl font-semibold">Account Actions</h2>
+            <div className="flex gap-4">
+              <button className="bg-blue-600 text-white px-4 w-[50%] py-2 rounded ">
+                Log Out
+              </button>
+              <button className="bg-blue-600 text-white px-4 py-2 w-[50%] rounded ">
+                Delete Account
+              </button>
+            </div>
           </div>
         </div>
       </div>
