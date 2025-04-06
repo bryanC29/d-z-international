@@ -126,6 +126,15 @@ const Navbar = () => {
                 Profile <AccountCircleIcon className="md:pl-1" />
               </Link>
             </li>
+            <li>
+              <Link
+                href="/adminDashboard"
+                className="block py-2 px-3 text-white hover:bg-stone-700 md:hover:bg-transparent rounded-sm md:bg-transparent md:p-0"
+                aria-current="page"
+              >
+                Admin
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
