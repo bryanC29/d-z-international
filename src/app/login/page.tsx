@@ -4,6 +4,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import Carousel_login from '@/components/carousel_login/page';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   validateName,
   validateEmail,
@@ -29,6 +30,8 @@ export default function Login() {
     });
   }, []);
 
+  const router = useRouter();
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -37,18 +40,38 @@ export default function Login() {
 
     if (emailError || passwordError) {
       setError({ email: emailError, password: passwordError, invalid: '' });
-    } else {
-      setError({ email: '', password: '', invalid: '' });
-      alert('All fields are valid! ✅');
-      const data = { email, password };
+      return;
+    }
+
+    setError({ email: '', password: '', invalid: '' });
+    const data = { email, password };
+
+    try {
       const response = await axios.post(
-        'http://40.1.0.197:3000/auth/login',
+        'https://d-z-international-backend.onrender.com/auth/login',
         data
       );
+
+      if (response.status === 201) {
+        router.push('/');
+      }
+
       console.log(response.data);
       console.log(response.status);
-      // in case of response.status === 201 redirect to home page
-      // in case of response.status === 404 show invalid credentials error
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404 || error.response?.status === 401) {
+          setError({ email: '', password: '', invalid: 'Invalid credentials' });
+        } else {
+          alert(
+            'Login failed: ' +
+              (error.response?.data?.message || 'Unexpected error')
+          );
+        }
+      } else {
+        console.error('Unexpected error:', error);
+        alert('Something went wrong. Please try again.');
+      }
     }
   };
 

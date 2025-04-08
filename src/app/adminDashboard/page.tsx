@@ -119,7 +119,7 @@ export default function adminDashboard() {
         </select>
       </div>
 
-      <table className="w-full table-auto border border-gray-300">
+      <table className="w-full table-auto border border-gray-300 overflow-x-scroll  ">
         <thead className="bg-gray-100">
           <tr>
             <th className="border px-4 py-2 text-left">Order ID</th>

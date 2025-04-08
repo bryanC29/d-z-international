@@ -3,14 +3,16 @@
 import Link from 'next/link';
 import Carousel_signin from '@/components/carousel_signin/page';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   validateName,
   validateEmail,
   validateMobile,
   validatePasswords,
 } from '@/util/validate/validate';
+import axios from 'axios';
 
-export default function () {
+export default function Register() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
@@ -23,7 +25,9 @@ export default function () {
     password: '',
   });
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     const nameError = validateName(name);
@@ -38,10 +42,40 @@ export default function () {
         mobile: mobileError,
         password: passwordError,
       });
-    } else {
-      setError({ name: nameError, email: '', mobile: '', password: '' });
-      alert('All fields are valid! ✅');
-      // Proceed with sign-in logic
+      return;
+    }
+
+    setError({ name: '', email: '', mobile: '', password: '' });
+
+    const data = { password, email, name, number: mobile };
+
+    try {
+      const response = await axios.post(
+        'https://d-z-international-backend.onrender.com/auth/register',
+        data
+      );
+
+      if (response.status === 201) {
+        router.push('/');
+      }
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status === 409) {
+          setError((prev) => ({
+            ...prev,
+            email: 'User with this email already exists.',
+          }));
+        } else {
+          alert(
+            `Registration failed: ${error.response?.data?.message || 'Something went wrong.'}`
+          );
+        }
+      } else {
+        alert('Unexpected error occurred. Check console for details.');
+        console.error(error);
+      }
     }
   };
 
