@@ -1,34 +1,43 @@
 'use client';
 
 import Link from 'next/link';
-import Carousel_signin from '@/components/carousel_signin/page';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Carousel_signin from '@/components/carousel_signin/page';
 import {
   validateName,
   validateEmail,
   validateMobile,
   validatePasswords,
 } from '@/util/validate/validate';
-import axios from 'axios';
 
-export default function Register() {
-  const [email, setEmail] = useState('');
+export default function RegisterPage() {
+  const router = useRouter();
+
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState({
-    name: '',
-    email: '',
-    mobile: '',
-    password: '',
-  });
+  const [visible, setVisible] = useState(false);
+  const [visibleConfirm, setVisibleConfirm] = useState(false);
+  const [error, setError] = useState<{
+    name?: string;
+    email?: string;
+    mobile?: string;
+    password?: string;
+    general?: string;
+  }>({});
 
-  const router = useRouter();
-
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError({});
+
+    const btn = e.currentTarget.querySelector('button[type="submit"]');
+    if (btn) {
+      btn.innerHTML = 'Registering...';
+      btn.setAttribute('disabled', 'true');
+    }
 
     const nameError = validateName(name);
     const emailError = validateEmail(email);
@@ -42,160 +51,202 @@ export default function Register() {
         mobile: mobileError,
         password: passwordError,
       });
+
+      if (btn) {
+        btn.innerHTML = 'Register';
+        btn.removeAttribute('disabled');
+      }
       return;
     }
 
-    setError({ name: '', email: '', mobile: '', password: '' });
-
-    const data = { password, email, name, number: mobile };
+    const api = process.env.NEXT_PUBLIC_API;
 
     try {
-      const response = await axios.post(
-        'https://d-z-international-backend.onrender.com/auth/register',
-        data
-      );
+      const res = await fetch(`${api}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          number: mobile,
+          password,
+        }),
+      });
 
-      if (response.status === 201) {
-        router.push('/');
-      }
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
+      const data = await res.json();
 
-        if (status === 409) {
-          setError((prev) => ({
-            ...prev,
-            email: 'User with this email already exists.',
-          }));
+      if (!res.ok) {
+        if (res.status === 409) {
+          setError({ email: 'User with this email already exists.' });
         } else {
-          alert(
-            `Registration failed: ${error.response?.data?.message || 'Something went wrong.'}`
-          );
+          setError({ general: data.message || 'Registration failed' });
         }
-      } else {
-        alert('Unexpected error occurred. Check console for details.');
-        console.error(error);
+        return;
+      }
+
+      if (btn) {
+        btn.innerHTML = 'Registered!';
+      }
+
+      router.push('/');
+    } catch (err) {
+      setError({ general: 'An unexpected error occurred' });
+    } finally {
+      if (btn) {
+        btn.innerHTML = 'Register';
+        btn.removeAttribute('disabled');
       }
     }
   };
 
   return (
-    <>
-      <div className="bg-neutral-800 flex justify-center items-center">
-        <div className="md:w-[60%] w-[90%] my-10 flex items-center justify-center rounded-2xl shadow-lg md:h-[110vh]">
-          <div className="w-full hidden rounded-l-md h-[110vh] md:inline-block">
-            <Carousel_signin />
-          </div>
-          <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:h-[110vh] md:rounded-l-none flex flex-col justify-center ">
-            <p className="text-3xl text-center font-bold py-10 pt-5 text-white">
-              Sign In
-            </p>
-            <form onSubmit={handleSubmit} className="pb-5" action="">
-              <label className="block text-lg text-white" id="name" htmlFor="">
-                Name:
-              </label>
-              {error.email && <p className="text-red-500">{error.name}</p>}
+    <div className="bg-neutral-800 flex justify-center items-center">
+      <div className="md:w-[60%] w-[90%] my-10 flex relative items-center md:h-[110vh] justify-center rounded-2xl shadow-lg">
+        <div className="w-full hidden md:inline-block h-[110vh] rounded-l-md">
+          <Carousel_signin />
+        </div>
+        <div className="bg-black p-7 md:p-4 w-full rounded-2xl md:rounded-l-none md:h-[110vh] flex flex-col justify-center">
+          <p className="text-3xl text-center font-bold py-10 pt-5 text-white">
+            Create Your Account
+          </p>
+          <form onSubmit={handleSubmit} className="pb-4">
+            {/* Name */}
+            <label className="block text-lg text-white" htmlFor="name">
+              Name:
+            </label>
+            {error.name && <p className="text-red-500">{error.name}</p>}
+            <input
+              className="w-full mb-3 border-2 border-white rounded-md p-2"
+              placeholder="John Doe"
+              type="text"
+              name="name"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+
+            {/* Email */}
+            <label className="block text-lg text-white" htmlFor="email">
+              Email:
+            </label>
+            {error.email && <p className="text-red-500">{error.email}</p>}
+            <input
+              className="w-full mb-3 border-2 border-white rounded-md p-2"
+              placeholder="john.doe@example.com"
+              type="email"
+              name="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            {/* Mobile */}
+            <label className="block text-lg text-white" htmlFor="mobile">
+              Contact Number:
+            </label>
+            {error.mobile && <p className="text-red-500">{error.mobile}</p>}
+            <input
+              className="w-full mb-3 border-2 border-white rounded-md p-2"
+              placeholder="+91 1234567890"
+              type="tel"
+              name="mobile"
+              id="mobile"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              required
+            />
+
+            {/* Password */}
+            <label className="block text-lg text-white" htmlFor="password">
+              Password:
+            </label>
+            <div className="flex">
               <input
-                className="w-full mb-3 border-2 border-black rounded-md p-2"
-                placeholder="John Doe"
-                type="name"
-                name="name"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <label className="block text-lg text-white" id="email" htmlFor="">
-                Email:
-              </label>
-              {error.email && <p className="text-red-500">{error.email}</p>}
-              <input
-                className="w-full mb-3 border-2 border-black rounded-md p-2"
-                placeholder="john.doe@example.com"
-                type="email"
-                name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <label
-                className="block text-lg text-white"
-                id="contact"
-                htmlFor=""
-              >
-                Contact number:
-              </label>
-              {error.mobile && <p className="text-red-500">{error.mobile}</p>}
-              <input
-                className="w-full mb-3 border-2 border-black rounded-md p-2"
-                placeholder="+91 1234567890"
-                type="tel"
-                name="contact"
-                id="contact"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-              />
-              <label
-                className="block text-lg text-white"
-                id="password"
-                htmlFor=""
-              >
-                Password:
-              </label>
-              <input
-                className="block w-full mb-3 border-2 border-black rounded-md p-2"
+                className="block w-full mb-3 border-t-2 border-l-2 border-b-2 border-white rounded-l-md p-2"
                 placeholder="Password"
-                type="password"
+                type={visible ? 'text' : 'password'}
                 name="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
-              <label
-                className="block text-lg text-white"
-                id="confirmpassword"
-                htmlFor=""
+              <button
+                className="bg-slate-600 hover:bg-slate-800 block mb-3 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
+                type="button"
+                onClick={() => setVisible(!visible)}
               >
-                Confirm Password:
-              </label>
-              {error.password && (
-                <p className="text-red-500">{error.password}</p>
-              )}
+                {visible ? '🙈' : '👁️'}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <label
+              className="block text-lg text-white"
+              htmlFor="confirmPassword"
+            >
+              Confirm Password:
+            </label>
+            {error.password && <p className="text-red-500">{error.password}</p>}
+            <div className="flex">
               <input
-                className="block w-full mb-5 border-2 border-black rounded-md p-2"
+                className="block w-full mb-5 border-t-2 border-l-2 border-b-2 border-white rounded-l-md p-2"
                 placeholder="Repeat Password"
-                type="password"
-                name="confirmpassword"
-                id="confirmpassword"
+                type={visibleConfirm ? 'text' : 'password'}
+                name="confirmPassword"
+                id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
-              <input
-                className="mb-7 mr-2"
-                type="checkbox"
-                name="remember"
-                id="remember"
-              />
-              <label className="text-lg text-white " id="remember" htmlFor="">
-                Remember Me
-              </label>
               <button
-                className="bg-slate-700 rounded-md mb-6 px-3 py-1 block w-full text-lg text-white border-white hover:bg-slate-800"
-                type="submit"
+                className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
+                type="button"
+                onClick={() => setVisibleConfirm(!visibleConfirm)}
               >
-                Register
+                {visibleConfirm ? '🙈' : '👁️'}
               </button>
-              <hr className="m-4"></hr>
-              {/* <Link href="/signin"className="bg-black rounded-md  px-3 py-1 mb-7 block w-full text-white text-lg border-2 border-white hover:text-black hover:bg-white" type="submit">Register</Link> */}
-              <p className="text-white text-center text-lg">
-                Already a user? |{' '}
-                <Link href="/login" className="underline italic">
-                  Login In
-                </Link>
-              </p>
-            </form>
-          </div>
+            </div>
+
+            {/* Remember Me */}
+            <input
+              className="mb-4 mr-2"
+              type="checkbox"
+              name="remember"
+              id="remember"
+            />
+            <label className="text-lg text-white" htmlFor="remember">
+              Remember Me
+            </label>
+
+            {/* General Error */}
+            {error.general && (
+              <p className="text-red-500 mb-4">{error.general}</p>
+            )}
+
+            {/* Submit */}
+            <button
+              className="bg-slate-700 rounded-md mb-3 px-3 py-1 block w-full text-lg text-white border-white hover:bg-slate-800"
+              type="submit"
+            >
+              Register
+            </button>
+
+            <hr className="my-4" />
+            <p className="text-center text-lg mb-3 text-white">OR</p>
+            <Link
+              href="/login"
+              className="bg-black rounded-md px-3 py-1 mb-7 block w-full text-white text-lg border-2 border-white hover:text-black hover:bg-white text-center"
+            >
+              Login
+            </Link>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
