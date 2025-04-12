@@ -1,76 +1,55 @@
 'use client';
 
-import axios from 'axios';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Carousel_login from '@/components/carousel_login/page';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  validateName,
-  validateEmail,
-  validateMobile,
-  //   validatePasswords,
-  validatePassword,
-} from '@/util/validate/validate';
 
-export default function Login() {
-  const [visible, setVisible] = useState(false);
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState({ email: '', password: '', invalid: '' });
-  const [data, setData] = useState(null);
-  const [Loading, setLoading] = useState(true);
-  const [errorAPI, setErrorAPI] = useState(null);
-  const [password, setPassword] = useState('');
-
-  useEffect(() => {
-    const api = 'https://192.168.1.17:3000/auth/login';
-    axios.post(api).then((response) => {
-      setData(response.data);
-      setLoading(false);
-    });
-  }, []);
-
+export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [error, setError] = useState<{
+    invalid?: string;
+    email?: string;
+    password?: string;
+  }>({});
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
-
-    if (emailError || passwordError) {
-      setError({ email: emailError, password: passwordError, invalid: '' });
-      return;
+    setError({});
+    const btn = e.currentTarget.querySelector('button[type="submit"]');
+    if (btn) {
+      btn.innerHTML = 'Loading...';
+      btn.setAttribute('disabled', 'true');
     }
 
-    setError({ email: '', password: '', invalid: '' });
-    const data = { email, password };
+    const api = process.env.NEXT_PUBLIC_API;
 
     try {
-      const response = await axios.post(
-        'https://d-z-international-backend.onrender.com/auth/login',
-        data
-      );
+      const res = await fetch(`${api}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      if (response.status === 201) {
-        router.push('/');
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError({ invalid: data.message || 'Login failed' });
+        return;
       }
 
-      console.log(response.data);
-      console.log(response.status);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 404 || error.response?.status === 401) {
-          setError({ email: '', password: '', invalid: 'Invalid credentials' });
-        } else {
-          alert(
-            'Login failed: ' +
-              (error.response?.data?.message || 'Unexpected error')
-          );
-        }
-      } else {
-        console.error('Unexpected error:', error);
-        alert('Something went wrong. Please try again.');
+      router.push('/');
+    } catch (err) {
+      setError({ invalid: 'An unexpected error occurred' });
+    } finally {
+      if (btn) {
+        btn.innerHTML = 'Login';
+        btn.removeAttribute('disabled');
       }
     }
   };
@@ -86,8 +65,8 @@ export default function Login() {
             <p className="text-3xl text-center font-bold py-10 pt-5 text-white">
               Continue Shopping
             </p>
-            <form onSubmit={handleSubmit} className="pb-4" action="">
-              <label className="block text-lg text-white" id="email" htmlFor="">
+            <form onSubmit={handleSubmit} className="pb-4">
+              <label className="block text-lg text-white" htmlFor="email">
                 Email:
               </label>
               {error.email && <p className="text-red-500">{error.email}</p>}
@@ -99,17 +78,15 @@ export default function Login() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <label
-                className="block text-lg text-white"
-                id="password"
-                htmlFor=""
-              >
+
+              <label className="block text-lg text-white" htmlFor="password">
                 Password:
-                {error.password && (
-                  <p className="text-red-500">{error.password}</p>
-                )}
               </label>
+              {error.password && (
+                <p className="text-red-500">{error.password}</p>
+              )}
               <div className="flex">
                 <input
                   className="block w-full mb-5 border-t-2 border-l-2 border-b-2 border-white rounded-l-md p-2"
@@ -119,42 +96,50 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   name="password"
                   id="password"
+                  required
                 />
-
                 <button
                   className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
                   type="button"
                   onClick={() => setVisible(!visible)}
-                ></button>
+                >
+                  {visible ? '🙈' : '👁️'}
+                </button>
               </div>
+
               <input
                 className="mb-4 mr-2"
                 type="checkbox"
                 name="remember"
                 id="remember"
               />
-              <label className="text-lg text-white " id="remember" htmlFor="">
+              <label className="text-lg text-white" htmlFor="remember">
                 Remember Me
               </label>
+
               <Link
                 className="block underline mb-5 text-lg text-white italic"
-                href="http://"
+                href="/forgot-password"
               >
                 Forgot Password?
               </Link>
-              {error.invalid && <p className="text-red-500">{error.invalid}</p>}
+
+              {error.invalid && (
+                <p className="text-red-500 mb-4">{error.invalid}</p>
+              )}
+
               <button
                 className="bg-slate-700 rounded-md mb-3 px-3 py-1 block w-full text-lg text-white border-white hover:bg-slate-800"
                 type="submit"
               >
                 Login
               </button>
-              <hr className="my-4"></hr>
+
+              <hr className="my-4" />
               <p className="text-center text-lg mb-3 text-white">OR</p>
               <Link
                 href="/signin"
-                className="bg-black rounded-md  px-3 py-1 mb-7 block w-full text-white text-lg border-2 border-white hover:text-black hover:bg-white text-center"
-                type="submit"
+                className="bg-black rounded-md px-3 py-1 mb-7 block w-full text-white text-lg border-2 border-white hover:text-black hover:bg-white text-center"
               >
                 Register
               </Link>
