@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Carousel_signin from '@/components/carousel_signin/page';
 import {
@@ -10,9 +10,11 @@ import {
   validateMobile,
   validatePasswords,
 } from '@/util/validate/validate';
+import { useAuth } from '../context/authContext';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { user, login } = useAuth();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,6 +30,12 @@ export default function RegisterPage() {
     password?: string;
     general?: string;
   }>({});
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,9 +72,7 @@ export default function RegisterPage() {
     try {
       const res = await fetch(`${api}/auth/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
           email,
@@ -86,9 +92,13 @@ export default function RegisterPage() {
         return;
       }
 
-      if (btn) {
-        btn.innerHTML = 'Registered!';
-      }
+      login({
+        uid: data.uid,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        token: data.token,
+      });
 
       router.push('/');
     } catch (err) {
