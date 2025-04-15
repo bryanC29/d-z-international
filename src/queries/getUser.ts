@@ -4,13 +4,10 @@ import { gql } from '@apollo/client';
 export const GET_USER = gql`
   query GetUser($uid: String!) {
     user(uid: $uid) {
-      uid
       name
       email
       number
-      role
       profile_url
-      dob
       addressDetails {
         line1
         line2
@@ -22,13 +19,6 @@ export const GET_USER = gql`
         alternate_number
         type
         weekend_availability
-      }
-      wishlist {
-        product_id
-      }
-      cart {
-        product_id
-        quantity
       }
     }
   }

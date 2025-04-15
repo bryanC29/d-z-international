@@ -58,11 +58,13 @@ const Navbar = () => {
                 Categories
               </Link>
             </li>
-            <li>
-              <Link href="/cart" className={navLinkClass}>
-                Cart
-              </Link>
-            </li>
+            {user && (
+              <li>
+                <Link href="/cart" className={navLinkClass}>
+                  Cart
+                </Link>
+              </li>
+            )}
             <li>
               <Link href="/product" className={navLinkClass}>
                 Products
