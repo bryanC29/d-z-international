@@ -54,7 +54,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/categories" className={navLinkClass}>
+              <Link href="/search" className={navLinkClass}>
                 Categories
               </Link>
             </li>
