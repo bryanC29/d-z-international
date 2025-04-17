@@ -1,8 +1,11 @@
 'use client';
 
+import { useAuth } from '@/app/context/authContext';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface ProductPageProps {
   name: string;
@@ -21,21 +24,49 @@ export default function ProductPage({
   price,
   offer_price,
 }: ProductPageProps) {
+  const router = useRouter();
+  const { user } = useAuth();
+  const api = process.env.NEXT_PUBLIC_API;
+  const [imgSrc, setImgSrc] = useState(media[0]);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  const handleAddToCart = () => {
-    console.log('Add to cart button clicked');
-    setAddedToCart(true);
+  const handleAddToCart = async () => {
+    if (!user?.token) {
+      router.push('/login');
+    } else {
+      try {
+        const data = { product_id: pid, quantity: '1' };
+        const res = await axios.post(`${api}/cart`, data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        if (res.status === 201) {
+          setAddedToCart(true);
+        } else {
+          console.error('Error adding to cart');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleImgError = () => {
+    setImgSrc(
+      'https://via.assets.so/img.jpg?w=500&h=500&tc=white&bg=grey&t=Image'
+    );
   };
 
   return (
     <div className="flex flex-col w-full md:w-1/5 bg-black text-white m-2 rounded-xl overflow-hidden shadow md:hover:scale-105 transition-all">
       <Image
-        src={media[0]}
+        src={imgSrc}
         alt=""
         height={500}
         width={500}
         className="w-full"
+        onError={handleImgError}
       />
       <div className="p-5">
         <p className="text-2xl">&#8377; {offer_price}</p>
