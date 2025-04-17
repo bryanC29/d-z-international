@@ -32,7 +32,7 @@ export default function Search() {
   return (
     <>
       <div className="flex flex-wrap flex-col md:flex-row">
-        <div className="w-full md:w-1/5">
+        {/* <div className="w-full md:w-1/5">
           <p className="text-xl py-3 px-1">Search by Filter</p>
           <hr />
           <div className="p-1 px-3">
@@ -43,9 +43,9 @@ export default function Search() {
             <input type="checkbox" name="women" id="women" />
             <label htmlFor="women">Women's Product</label>
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-row flex-wrap w-full md:w-4/5 p-3">
+        <div className="flex flex-row flex-wrap w-full md:w-full p-3">
           {products &&
             products.map((product, index) => (
               <ProductPage
