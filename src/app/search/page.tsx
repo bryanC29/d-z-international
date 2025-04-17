@@ -31,22 +31,35 @@ export default function Search() {
 
   return (
     <>
-      <h1>Hello</h1>
-      <div className="flex flex-row flex-wrap">
-        {products &&
-          products.map((product, index) => (
-            <ProductPage
-              name={product.name}
-              pid={product.pid}
-              media={product.media}
-              description={product.description}
-              price={product.price}
-              offer_price={product.offer_price}
-              key={index}
-            />
-          ))}
+      <div className="flex flex-wrap flex-col md:flex-row">
+        <div className="w-full md:w-1/5">
+          <p className="text-xl py-3 px-1">Search by Filter</p>
+          <hr />
+          <div className="p-1 px-3">
+            <input type="checkbox" name="men" id="men" />
+            <label htmlFor="men">Men's Product</label>
+          </div>
+          <div className="p-1 px-3">
+            <input type="checkbox" name="women" id="women" />
+            <label htmlFor="women">Women's Product</label>
+          </div>
+        </div>
+
+        <div className="flex flex-row flex-wrap w-full md:w-4/5 p-3">
+          {products &&
+            products.map((product, index) => (
+              <ProductPage
+                name={product.name}
+                pid={product.pid}
+                media={product.media}
+                description={product.description}
+                price={product.price}
+                offer_price={product.offer_price}
+                key={index}
+              />
+            ))}
+        </div>
       </div>
-      <p>Search</p>
     </>
   );
 }
