@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Carousel_login from '@/components/carousel_login/page';
 import { useAuth } from '../context/authContext';
+import axios from 'axios';
 
 type LoginResponse = {
   message: string;
@@ -46,22 +47,13 @@ export default function LoginPage() {
     const api = process.env.NEXT_PUBLIC_API;
 
     try {
-      const res = await fetch(`${api}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post<LoginResponse>(`${api}/auth/login`, {
+        email,
+        password,
       });
 
-      const data: LoginResponse = await res.json();
+      const data = res.data;
 
-      if (!res.ok) {
-        setError({ invalid: data.message || 'Login failed' });
-        return;
-      }
-
-      // ✅ Log in via context
       login({
         uid: data.uid,
         name: data.name,
@@ -71,8 +63,12 @@ export default function LoginPage() {
       });
 
       router.push('/');
-    } catch (err) {
-      setError({ invalid: 'An unexpected error occurred' });
+    } catch (err: Error | any) {
+      if (err.response) {
+        setError({ invalid: err.response.data.message || 'Login failed' });
+      } else {
+        setError({ invalid: 'An unexpected error occurred' });
+      }
     } finally {
       if (btn) {
         btn.innerHTML = 'Login';

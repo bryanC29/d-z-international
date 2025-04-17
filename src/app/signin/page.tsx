@@ -11,6 +11,7 @@ import {
   validatePasswords,
 } from '@/util/validate/validate';
 import { useAuth } from '../context/authContext';
+import axios from 'axios';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -70,27 +71,14 @@ export default function RegisterPage() {
     const api = process.env.NEXT_PUBLIC_API;
 
     try {
-      const res = await fetch(`${api}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          number: mobile,
-          password,
-        }),
+      const res = await axios.post(`${api}/auth/register`, {
+        name,
+        email,
+        number: mobile,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          setError({ email: 'User with this email already exists.' });
-        } else {
-          setError({ general: data.message || 'Registration failed' });
-        }
-        return;
-      }
+      const data = res.data;
 
       login({
         uid: data.uid,
@@ -101,8 +89,18 @@ export default function RegisterPage() {
       });
 
       router.push('/');
-    } catch (err) {
-      setError({ general: 'An unexpected error occurred' });
+    } catch (err: Error | any) {
+      if (err.response) {
+        if (err.response.status === 409) {
+          setError({ email: 'User with this email already exists.' });
+        } else {
+          setError({
+            general: err.response.data.message || 'Registration failed',
+          });
+        }
+      } else {
+        setError({ general: 'An unexpected error occurred' });
+      }
     } finally {
       if (btn) {
         btn.innerHTML = 'Register';
