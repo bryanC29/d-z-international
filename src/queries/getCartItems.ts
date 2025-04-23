@@ -21,3 +21,11 @@ export const GET_PRODUCT_DETAILS = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_PRICE = gql`
+  query Product($pid: String!) {
+    product(pid: $pid) {
+      price
+    }
+  }
+`;
