@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 export default function Cart() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [subtotal, setSubtotal] = useState(0);
   const [pricesMap, setPricesMap] = useState({});
 
@@ -22,7 +22,7 @@ export default function Cart() {
   });
 
   useEffect(() => {
-    if (!user?.token) router.push('/login');
+    if (!authLoading && !user?.token) router.push('/login');
   }, [user, router]);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export default function Cart() {
         </div>
 
         <Link
-          href=""
+          href="/checkout"
           className="text-white border-2 border-green-400 px-4 py-3 hover:bg-green-400 hover:text-black
           font-bold w-full text-center inline-block md:sticky md:top-4 rounded-md"
         >

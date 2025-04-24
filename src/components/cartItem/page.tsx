@@ -15,7 +15,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ productId, quantity }: CartItemProps) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { data, loading, error } = useQuery(GET_PRODUCT_DETAILS, {
     client,
@@ -50,13 +50,13 @@ export default function CartItem({ productId, quantity }: CartItemProps) {
   const api = process.env.NEXT_PUBLIC_API || 'localhost';
 
   const handleRemoveItem = async () => {
-    if (!user?.token) {
+    if (!authLoading && !user?.token) {
       router.push('/login');
     } else {
       try {
         const res = await axios.delete(`${api}/cart/${productId}`, {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         });
         if (res.status === 200) {

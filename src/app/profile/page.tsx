@@ -8,11 +8,11 @@ import client from '@/lib/apolloClient';
 import { GET_USER } from '@/queries/getUser';
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user?.token) router.push('/login');
+    if (!authLoading && !user?.token) router.push('/login');
   }, [user, router]);
 
   const { data, loading, error } = useQuery(GET_USER, {

@@ -25,20 +25,20 @@ export default function ProductPage({
   offer_price,
 }: ProductPageProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const api = process.env.NEXT_PUBLIC_API;
   const [imgSrc, setImgSrc] = useState(media[0]);
   const [addedToCart, setAddedToCart] = useState(false);
 
   const handleAddToCart = async () => {
-    if (!user?.token) {
+    if (!authLoading && !user?.token) {
       router.push('/login');
     } else {
       try {
         const data = { product_id: pid, quantity: '1' };
         const res = await axios.post(`${api}/cart`, data, {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         });
         if (res.status === 201) {
