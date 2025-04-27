@@ -63,6 +63,7 @@ export default function Checkout() {
           },
         });
         setCartItems(res.data);
+        if (cartItems.length === 0) router.push('/');
       } catch (err) {
         console.error(err);
       }
