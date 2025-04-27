@@ -69,9 +69,14 @@ export default function Cart() {
     }
   }, [data]);
 
-  const delivery = 40;
-  const tax = +(0.18 * subtotal).toFixed(2);
-  const cartTotal = Math.round(subtotal + delivery + tax);
+  const delivery = cartItems && cartItems.length > 0 ? 40 : 0;
+  const tax =
+    cartItems && cartItems.length > 0 ? +(0.18 * subtotal).toFixed(2) : 0;
+  const cartTotal =
+    cartItems && cartItems.length > 0
+      ? Math.round(subtotal + delivery + tax)
+      : 0;
+  const isCartEmpty = !cartItems || cartItems.length === 0;
 
   if (loading) return <p>Loading cart...</p>;
   if (error) return <p>Error loading cart data.</p>;
@@ -124,9 +129,15 @@ export default function Cart() {
         </div>
 
         <Link
-          href="/checkout"
-          className="text-white border-2 border-green-400 px-4 py-3 hover:bg-green-400 hover:text-black
-          font-bold w-full text-center inline-block md:sticky md:top-4 rounded-md"
+          href={isCartEmpty ? '#' : '/checkout'}
+          className={`text-white border-2 px-4 py-3 font-bold w-full text-center inline-block md:sticky md:top-4 rounded-md
+    ${
+      isCartEmpty
+        ? 'border-gray-400 bg-gray-600 pointer-events-none cursor-not-allowed'
+        : 'border-green-400 hover:bg-green-400 hover:text-black'
+    }
+  `}
+          aria-disabled={isCartEmpty}
         >
           Proceed to Checkout
         </Link>
