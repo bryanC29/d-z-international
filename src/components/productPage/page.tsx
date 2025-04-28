@@ -65,13 +65,19 @@ export default function ProductPage({
         alt=""
         height={500}
         width={500}
-        className="w-full"
+        className="w-full cursor-pointer"
         onError={handleImgError}
+        onClick={() => router.push(`/product/${pid}`)}
       />
       <div className="p-5">
         <p className="text-2xl">&#8377; {offer_price}</p>
         <p className="line-through text-gray-400">&#8377; {price}</p>
-        <p className="text-xl">{name}</p>
+        <p
+          className="text-xl cursor-pointer"
+          onClick={() => router.push(`/product/${pid}`)}
+        >
+          {name}
+        </p>
         <p>{description}</p>
         {!addedToCart && (
           <button
@@ -84,10 +90,10 @@ export default function ProductPage({
         )}
         {addedToCart && (
           <Link
-            href=""
+            href="/cart"
             className="border-green-400 block text-center border w-full p-3 my-2 mt-8 rounded-md hover:bg-green-400 hover:text-black"
           >
-            Checkout
+            View Cart
           </Link>
         )}
       </div>
