@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       if (user?.token) {
         await fetch(`${api}/auth/logout`, {
-          method: 'POST',
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
