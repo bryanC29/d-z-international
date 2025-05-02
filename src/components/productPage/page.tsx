@@ -78,7 +78,7 @@ export default function ProductPage({
         >
           {name}
         </p>
-        <p>{description}</p>
+        <p>{description.match(/(.*?[.!?])\s/)?.[1] || description}</p>
         {!addedToCart && (
           <button
             className="border-orange-400 border w-full p-3 my-2 mt-8 rounded-md hover:bg-orange-400 hover:text-black"
