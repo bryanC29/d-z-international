@@ -133,10 +133,10 @@ export default function ProductPage({ params }: Props) {
       </div>
       <div className="p-4">
         <div className="flex flex-col md:flex-row">
-          <button className="md:w-full border me-4 border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
+          <button className="md:w-full border mb-2 md:me-4 md:m-0 border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
             Add To Cart
           </button>
-          <button className="md:w-full bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
+          <button className="md:w-full md:m-0 my-4 mt-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
             Buy Now
           </button>
         </div>
