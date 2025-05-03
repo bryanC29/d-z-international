@@ -5,15 +5,48 @@ import { GET_PRODUCT } from '@/queries/getProductDetails';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { use } from 'react';
+import Carousel from '@/components/carousel/page';
+import RatingStar from '@/components/ratingStar/page';
+import { JSX } from '@emotion/react/jsx-runtime';
+import Link from 'next/link';
 
 type Props = {
   params: Promise<{ pid: string }>;
 };
 
+const renderDescription = (description: string) => {
+  const parts = description.split(/(\|\|\|\||\|\|)/).filter(Boolean);
+
+  const result: JSX.Element[] = [];
+  let addMargin = false;
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+
+    if (part === '||||') {
+      addMargin = true;
+      continue;
+    }
+
+    if (part === '||') {
+      addMargin = false;
+      continue;
+    }
+
+    result.push(
+      <p key={i} className={addMargin ? 'mt-2' : ''}>
+        {part.trim()}
+      </p>
+    );
+
+    addMargin = false;
+  }
+
+  return result;
+};
+
 export default function ProductPage({ params }: Props) {
-  // Unwrap the promise with React.use()
   const { pid } = use(params);
-  console.log(pid);
 
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +59,6 @@ export default function ProductPage({ params }: Props) {
           variables: { pid },
           fetchPolicy: 'no-cache',
         });
-        console.log(data);
 
         setProduct(data?.product);
       } catch (error) {
@@ -46,48 +78,74 @@ export default function ProductPage({ params }: Props) {
   if (!product) {
     return <div className="text-white p-5">Product not found.</div>;
   }
-  console.log(product);
 
   return (
-    <div className="bg-zinc-800 md:p-10 flex md:flex-row flex-col">
-      <div className="bg-orange-400 w-[90%] md:w-[40%] m-5 rounded-2xl p-2">
-        {product.media && (
-          <Image
-            src={product.media[0]}
-            alt={product.name}
-            width={500}
-            height={500}
-            className="rounded-2xl object-contain"
+    <div className="bg-zinc-800 text-white">
+      <div className="md:p-2 flex md:flex-row flex-col">
+        <div className="bg-black w-11/12 md:w-1/2 md:h-[85vh] m-5 rounded-2xl overflow-hidden shadow-lg shadow-black p-2">
+          <Carousel
+            images={product.media}
+            divHeightMd="85vh"
+            divHeightNormal="40vh"
           />
-        )}
-      </div>
+        </div>
 
-      <div className="text-white md:w-[60%] m-5 rounded-2xl p-2 md:text-left text-center">
-        <p className="text-5xl font-bold mt-3">{product.name}</p>
-        <hr className="mt-3" />
-        <div className="text-left">
-          <p className="text-2xl mt-8">4 out of 5 rating</p>
-          <p className="text-xl mt-5">M.R.P.:</p>
-          <p className="line-through text-xl">${product.price}</p>
-          <p className="text-4xl mt-3">${product.offer_price}</p>
-        </div>
-        <hr className="mt-3" />
-        <div className="mt-4">
-          <p className="text-lg flex">
-            Category: <span className="ml-1 font-bold">{product.category}</span>
+        <div className="text-white md:w-3/5 m-5 mt-2 rounded-2xl p-2 md:text-left text-center">
+          <p className="text-4xl font-semibold mt-3 pb-3 border-b">
+            {product.name}
           </p>
+          <p className="my-1">Category: {product.category}</p>
+          <RatingStar rating={product.top_points} />
+          <p className="line-through text-red-400">&#8377;{product.price}</p>
+          <p className="text-2xl pb-1 border-b">&#8377;{product.offer_price}</p>
+          <p className="my-4">{product.description}</p>
+          <div className="flex flex-col md:flex-row">
+            <button className="md:w-full m-2 border border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
+              Add To Cart
+            </button>
+            <button className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
+              Buy Now
+            </button>
+          </div>
         </div>
-        <hr className="mt-2" />
-        <p className="text-xl font-bold mt-4">About this item:</p>
-        <p className="mt-2 whitespace-pre-line">{product.description}</p>
-        <div className="flex mt-5">
-          <button className="h-14 w-[50%] m-2 rounded-lg text-lg font-bold border-white border-2 bg-black hover:bg-white hover:text-black">
+      </div>
+      <div className="p-4">
+        <p className="text-lg font-semibold whitespace-pre-line text-center md:text-start bg-zinc-600 p-3 rounded-md md:my-4 mb-4">
+          Product Details
+        </p>
+        {renderDescription(product.details)}
+      </div>
+      <div className="p-4">
+        <p className="text-lg font-semibold whitespace-pre-line text-center md:text-start bg-zinc-600 p-3 rounded-md md:my-4 mb-4">
+          Product Gallery
+        </p>
+        <div className="flex flex-col md:flex-row w-full flex-wrap justify-center items-center">
+          {product.gallery.map((item: any, index: number) => (
+            <Image
+              alt={`Image-${index}`}
+              src={item.image_url}
+              height={500}
+              width={500}
+              className="w-full md:max-w-[40rem] h-auto rounded-md md:m-4 m-2"
+            />
+          ))}
+        </div>
+      </div>
+      <div className="p-4">
+        <div className="flex flex-col md:flex-row">
+          <button className="md:w-full border me-4 border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
             Add To Cart
           </button>
-          <button className="h-14 w-[50%] m-2 rounded-lg text-lg font-bold bg-orange-600 hover:bg-orange-700">
+          <button className="md:w-full bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
             Buy Now
           </button>
         </div>
+        <Link
+          href="/search"
+          className="text-lg font-semibold text-center bg-zinc-600 hover:bg-zinc-700 p-3 rounded-md md:my-4 inline-block w-full"
+        >
+          Show all products
+        </Link>
       </div>
     </div>
   );

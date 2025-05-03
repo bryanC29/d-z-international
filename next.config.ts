@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       'via.assets.so',
       'media.croma.com',
       'avatar.iran.liara.run',
+      'www.gonoise.com',
     ],
   },
 };

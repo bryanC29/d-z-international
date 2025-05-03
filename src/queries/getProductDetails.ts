@@ -10,6 +10,10 @@ export const GET_PRODUCT = gql`
       price
       offer_price
       details
+      top_points
+      gallery {
+        image_url
+      }
     }
   }
 `;
