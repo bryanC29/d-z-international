@@ -9,6 +9,9 @@ import Carousel from '@/components/carousel/page';
 import RatingStar from '@/components/ratingStar/page';
 import { JSX } from '@emotion/react/jsx-runtime';
 import Link from 'next/link';
+import axios from 'axios';
+import { useAuth } from '@/app/context/authContext';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   params: Promise<{ pid: string }>;
@@ -47,7 +50,10 @@ const renderDescription = (description: string) => {
 
 export default function ProductPage({ params }: Props) {
   const { pid } = use(params);
-
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
+  const [addedToCart, setAddedToCart] = useState(false);
+  const api = process.env.NEXT_PUBLIC_API;
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -70,6 +76,28 @@ export default function ProductPage({ params }: Props) {
 
     fetchProductDetails();
   }, [pid]);
+
+  const handleAddToCart = async () => {
+    if (!authLoading && !user?.token) {
+      router.push('/login');
+    } else {
+      try {
+        const data = { product_id: pid, quantity: '1' };
+        const res = await axios.post(`${api}/cart`, data, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        });
+        if (res.status === 201) {
+          setAddedToCart(true);
+        } else {
+          console.error('Error adding to cart');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   if (loading) {
     return <div className="text-white p-5">Loading...</div>;
@@ -100,12 +128,27 @@ export default function ProductPage({ params }: Props) {
           <p className="text-2xl pb-1 border-b">&#8377;{product.offer_price}</p>
           <p className="my-4">{product.description}</p>
           <div className="flex flex-col md:flex-row">
-            <button className="md:w-full m-2 border border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
-              Add To Cart
-            </button>
-            <button className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
-              Buy Now
-            </button>
+            {!addedToCart && (
+              <button
+                className="md:w-full m-2 border border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black"
+                onClick={handleAddToCart}
+              >
+                Add To Cart
+              </button>
+            )}
+            {!addedToCart && (
+              <button className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
+                Buy Now
+              </button>
+            )}
+            {addedToCart && (
+              <Link
+                href="/cart"
+                className="w-full border mb-2 mt-3 border-green-400 p-2 rounded-md hover:bg-green-400 hover:text-black text-center"
+              >
+                View Cart
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -133,12 +176,27 @@ export default function ProductPage({ params }: Props) {
       </div>
       <div className="p-4">
         <div className="flex flex-col md:flex-row">
-          <button className="md:w-full border mb-2 md:me-4 md:m-0 border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black">
-            Add To Cart
-          </button>
-          <button className="md:w-full md:m-0 my-4 mt-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
-            Buy Now
-          </button>
+          {!addedToCart && (
+            <button
+              className="md:w-full border mb-2 md:me-4 md:m-0 border-orange-400 p-2 rounded-md hover:bg-orange-400 hover:text-black cursor-pointer"
+              onClick={handleAddToCart}
+            >
+              Add To Cart
+            </button>
+          )}
+          {!addedToCart && (
+            <button className="md:w-full md:m-0 my-4 mt-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2 cursor-pointer">
+              Buy Now
+            </button>
+          )}
+          {addedToCart && (
+            <Link
+              href="/cart"
+              className="w-full border mb-2 md:m-0 border-green-400 p-2 rounded-md hover:bg-green-400 hover:text-black text-center"
+            >
+              View Cart
+            </Link>
+          )}
         </div>
         <Link
           href="/search"
