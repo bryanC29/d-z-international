@@ -63,7 +63,7 @@ export default function Checkout() {
           },
         });
         setCartItems(res.data);
-        if (cartItems.length === 0) router.push('/');
+        if (res.data.length === 0) router.push('/');
       } catch (err) {
         console.error(err);
       }
@@ -163,7 +163,8 @@ export default function Checkout() {
 
   useEffect(() => {
     if (!loading && !user?.token) {
-      router.push('/login');
+      // router.push('/login');
+      alert('Please login to continue');
     }
   }, [user, loading, router]);
 
