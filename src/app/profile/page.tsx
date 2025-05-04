@@ -54,12 +54,15 @@ export default function Profile() {
         <p className="text-2xl font-semibold md:text-center mb-3">
           {profile.name}
         </p>
-        <div className="flex flex-row md:flex-col items-center w-full">
-          <Link href="" className={`${btnClass} w-full md:m-3`}>
-            Orders
-          </Link>
+        <div className="flex flex-col items-center w-full">
           <Link href="/cart" className={`${btnClass} w-full md:m-3`}>
             Cart
+          </Link>
+          <Link href="/order" className={`${btnClass} w-full md:m-3`}>
+            Orders
+          </Link>
+          <Link href="/return" className={`${btnClass} w-full md:m-3`}>
+            Returns
           </Link>
         </div>
       </div>
