@@ -82,7 +82,9 @@ export default function CartItem({ productId, quantity }: CartItemProps) {
       />
       <div className="p-4 w-full">
         <p className="text-2xl font-semibold">{name}</p>
-        <p className="p-2">{description}</p>
+        <p className="p-2">
+          {description.match(/(.*?[.!?])\s/)?.[1] || description}
+        </p>
         <div className="flex flex-col justify-around w-full md:flex-row my-4">
           <p>Price: &#8377;{price}</p>
           <p className="bg-orange-600 px-1 w-max">
