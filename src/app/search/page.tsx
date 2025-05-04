@@ -4,62 +4,90 @@ import ProductPage from '@/components/productPage/page';
 import { GET_PRODUCTS } from '@/queries/getProducts';
 import { useQuery } from '@apollo/client';
 import client from '@/lib/apolloClient';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+interface Product {
+  name: string;
+  pid: string;
+  media: string[];
+  description: string;
+  price: number;
+  offer_price: number;
+  category: string;
+}
 
 export default function Search() {
   const { data, loading, error } = useQuery(GET_PRODUCTS, { client });
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const categoryParam = searchParams.get('c')?.toLowerCase();
+  const searchParam = searchParams.get('s')?.toLowerCase() || '';
+
+  const [searchInput, setSearchInput] = useState(searchParam);
 
   useEffect(() => {
     if (error) {
-      console.error('Error fetching cart items:', error);
+      console.error('Error fetching products:', error);
     }
   }, [error]);
 
-  if (loading) return <p>Loading cart...</p>;
-  if (error) return <p>Error loading cart data.</p>;
+  const filteredProducts = useMemo(() => {
+    if (!data?.products) return [];
 
-  const products:
-    | {
-        name: string;
-        pid: string;
-        media: string[];
-        description: string;
-        price: number;
-        offer_price: number;
-      }[]
-    | undefined = data.products;
+    return data.products.filter((product: Product) => {
+      const matchesCategory = categoryParam
+        ? product.category.toLowerCase() === categoryParam
+        : true;
+
+      const matchesSearch = searchParam
+        ? product.name.toLowerCase().includes(searchParam)
+        : true;
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [data, categoryParam, searchParam]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set('s', value);
+    } else {
+      params.delete('s');
+    }
+    router.push(`?${params.toString()}`);
+  };
+
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p>Error loading products.</p>;
 
   return (
-    <>
-      <div className="flex flex-wrap flex-col md:flex-row">
-        {/* <div className="w-full md:w-1/5">
-          <p className="text-xl py-3 px-1">Search by Filter</p>
-          <hr />
-          <div className="p-1 px-3">
-            <input type="checkbox" name="men" id="men" />
-            <label htmlFor="men">Men's Product</label>
-          </div>
-          <div className="p-1 px-3">
-            <input type="checkbox" name="women" id="women" />
-            <label htmlFor="women">Women's Product</label>
-          </div>
-        </div> */}
+    <div className="p-4 bg-neutral-800 flex flex-wrap flex-col">
+      <input
+        type="text"
+        value={searchInput}
+        onChange={handleSearchChange}
+        placeholder="Search products..."
+        className="mb-4 p-2 border border-gray-300 rounded w-full bg-black text-white"
+      />
 
-        <div className="flex flex-row flex-wrap w-full md:w-full p-3">
-          {products &&
-            products.map((product, index) => (
-              <ProductPage
-                name={product.name}
-                pid={product.pid}
-                media={product.media}
-                description={product.description}
-                price={product.price}
-                offer_price={product.offer_price}
-                key={index}
-              />
-            ))}
-        </div>
+      <div className="flex flex-row flex-wrap w-full md:w-full p-3">
+        {filteredProducts.map((product: any, index: number) => (
+          <ProductPage
+            key={product.pid}
+            name={product.name}
+            pid={product.pid}
+            media={product.media}
+            description={product.description}
+            price={product.price}
+            offer_price={product.offer_price}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 }
