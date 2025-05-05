@@ -4,7 +4,7 @@ import ProductPage from '@/components/productPage/page';
 import { GET_PRODUCTS } from '@/queries/getProducts';
 import { useQuery } from '@apollo/client';
 import client from '@/lib/apolloClient';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Product {
@@ -17,7 +17,7 @@ interface Product {
   category: string;
 }
 
-export default function Search() {
+function SearchComponent() {
   const { data, loading, error } = useQuery(GET_PRODUCTS, { client });
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -89,5 +89,13 @@ export default function Search() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Search() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <SearchComponent />
+    </Suspense>
   );
 }
