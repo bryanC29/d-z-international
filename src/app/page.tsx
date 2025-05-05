@@ -1,10 +1,113 @@
-import './styles.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import Carousel from '@/components/carousel/page';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import ProductPage from '@/components/productPage/page';
+
+const showStoppers = [
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: [
+      'https://media.croma.com/image/upload/v1730269823/Croma%20Assets/Communication/Headphones%20and%20Earphones/Images/303746_0_tnxfm9.png',
+    ],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+  {
+    pid: 'ghghghghgh',
+    name: 'Leather Belts',
+    media: ['/belt2-5.jpg'],
+    description: 'Genuine leather belt for men',
+    price: 999,
+    offer_price: 499,
+  },
+];
+
+const reviews = [
+  {
+    name: 'Ajay Kumar',
+    image: 'https://avatar.iran.liara.run/public/3',
+    review:
+      'Great website, totally loved it. The layout is very clean and user-friendly. Would definitely recommend to friends!',
+    rating: 4.5,
+  },
+  {
+    name: 'Sneha Reddy',
+    image: 'https://avatar.iran.liara.run/public/79',
+    review:
+      'I found the website very helpful and easy to navigate. The content was well-organized and visually appealing.',
+    rating: 4.2,
+  },
+  {
+    name: 'Rajesh Mehra',
+    image: 'https://avatar.iran.liara.run/public/34',
+    review:
+      'A very well-designed site with plenty of useful features. I had a smooth experience throughout.',
+    rating: 4.0,
+  },
+  {
+    name: 'Priya Sharma',
+    image: 'https://avatar.iran.liara.run/public/71',
+    review:
+      'I really enjoyed using this site. The interface is clean and everything loads quickly. Great job!',
+    rating: 4.7,
+  },
+  {
+    name: 'Arun Verma',
+    image: 'https://avatar.iran.liara.run/public/15',
+    review:
+      'The site exceeded my expectations. It’s intuitive and well-structured. I found exactly what I was looking for.',
+    rating: 4.3,
+  },
+];
 
 export default function Home() {
+  const images = ['/belt2-5.jpg', '/avng.jpg'];
   return (
-    <>
+    <div className="w-full overflow-x-hidden bg-black">
+      <Carousel images={images} divHeightMd="150vh" divHeightNormal="80vh" />
       <h2 className="text-center text-white font-semibold bg-gray-900 p-3 text-2xl uppercase">
         Shop now
       </h2>
@@ -14,7 +117,7 @@ export default function Home() {
           Top Categories
         </p>
         <div className="flex justify-around flex-wrap">
-          <Link href="/categories/belts" className="m-6">
+          <Link href="/search" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -24,7 +127,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/categories/belts" className="m-6">
+          <Link href="/search" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -34,7 +137,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/categories" className="m-6">
+          <Link href="/search" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -44,7 +147,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/categories" className="m-6">
+          <Link href="/search" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -54,7 +157,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/categories" className="m-6">
+          <Link href="/search" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -67,7 +170,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="luxury p-4">
+      <div className="luxury p-4 backdrop-brightness-50 bg-[url(/portrait-wood.jpg)] md:bg-[url(/landscape-wood.jpg)]">
         <p className="text-white text-center text-3xl font-semibold pb-2">
           Luxurious Fineness
         </p>
@@ -93,8 +196,8 @@ export default function Home() {
             <p className="text-lg my-4">
               Starting @ <span className="bg-red-600">Rs. 199</span>
             </p>
-            <Link href="">
-              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black">
+            <Link href="/search">
+              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black w-full md:w-max text-center">
                 Shop now
               </button>
             </Link>
@@ -122,8 +225,8 @@ export default function Home() {
             <p className="text-lg my-4">
               Starting @ <span className="bg-red-600">Rs. 199</span>
             </p>
-            <Link href="">
-              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black">
+            <Link href="/search">
+              <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black w-full md:w-max text-center">
                 Shop now
               </button>
             </Link>
@@ -131,254 +234,78 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-black w-full overflow-hidden">
-        <p className="text-white text-3xl text-center font-bold py-5">
+      <div className="overflow-hidden w-full bg-neutral-800">
+        <p className="text-white text-3xl text-center font-bold py-5 bg-black">
           Show Stopper
         </p>
-        <div className="p-5 flex flex-row flex-nowrap whitespace-nowrap gap-5 animate-marquee overflow-hidden w-max">
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
-          <div className="min-w-60 h-80 bg-slate-50 rounded-lg relative bg-[url(/avng.jpg)] justify-end flex flex-col">
-            <div className="bg-slate-100 bg-opacity-30 p-4 rounded-b-lg gap-2">
-              <p className="text-lg font-bold opacity-">HandBags</p>
-              <p>@ rs. 2999</p>
-              <button className="mt-2 bg-slate-600 w-full rounded-md">
-                Add to cart
-              </button>
-            </div>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-          </div>
+        <div className="flex flex-row flex-wrap justify-center gap-3 p-5">
+          {showStoppers.map((i) => (
+            <ProductPage
+              key={i.pid}
+              name={i.name}
+              pid={i.pid}
+              media={i.media}
+              description={i.description}
+              price={i.price}
+              offer_price={i.offer_price}
+            />
+          ))}
         </div>
+        <div className="w-full overflow-x-scroll no-scrollbar"></div>
       </div>
 
       <div className="bg-neutral-900 w-full overflow-hidden">
         <p className="text-white text-3xl text-center font-bold py-5">
           Customer Satisfaction
         </p>
-        <div className="p-5 flex flex-row flex-nowrap gap-5 animate-marquee overflow-hidden w-max">
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
-          <div className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64">
-            <div className="bg-slate-600 rounded-full h-36 w-36 my-5 mx-14"></div>
-            <p className="p-2 text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              libero sed rem nemo enim deleniti obcaecati, error
-            </p>
-            {/* <Image
-              src="/avng.jpg"
-              alt="img"
-              layout="fill"
-              objectFit="fill"
-              className="rounded-lg"
-            /> */}
-            <p className="text-center font-bold">RATING</p>
-          </div>
+        <div className="p-5 flex flex-row flex-wrap justify-center gap-5 w-full">
+          {reviews.map((i) => (
+            <div
+              key={i.name}
+              className="min-w-60 h-96 bg-slate-50 rounded-lg flex-col flex max-w-64 bg-[url(/avng.jpg)] bg-cover"
+            >
+              <Image
+                src={i.image}
+                alt={i.name}
+                height={100}
+                width={100}
+                className="rounded-full h-36 w-36 my-5 mx-14"
+              />
+              <p className="text-center text-lg font-bold">{i.name}</p>
+              <p className="p-2 text-center">{i.review}</p>
+              <p className="text-center">
+                Rating: <span className="font-semibold">{i.rating}</span> out of
+                5
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="bg-slate-50 flex flex-col md:flex-row">
+      <div className="bg-slate-50 flex flex-col md:flex-row items-center">
         <div className="flex flex-row">
-          <div className="bg-slate-900 rounded-full h-24 w-24 m-5 ml-14 align-middle items-center flex"></div>
+          <KeyboardReturnIcon
+            className="text-white bg-slate-800 rounded-full p-2 mx-4 my-4 md:my-0"
+            sx={{ fontSize: '4rem' }}
+          />
           <p className="mx-4 text-3xl md:ml-8 font-semibold flex align-middle items-center">
             EASY RETURN & REFUND POLICY
           </p>
         </div>
-        <div className="flex flex-row align-middle justify-center">
-          <button className="w-36 bg-zinc-400 h-16 rounded-lg text-xl font-semibold md:ml-96 m-10">
+        <div className="flex flex-row align-middle justify-center md:justify-end h-max w-full md:w-1/2">
+          <Link
+            href="/return"
+            className="bg-zinc-400 hover:bg-zinc-500 rounded-lg text-xl font-semibold m-3 py-4 px-8"
+          >
             Return
-          </button>
-          <button className="w-36 bg-zinc-400 h-16 rounded-lg text-xl font-semibold m-10">
+          </Link>
+          <Link
+            href="/order"
+            className="bg-zinc-400 hover:bg-zinc-500 rounded-lg text-xl font-semibold m-3 py-4 px-8"
+          >
             Orders
-          </button>
+          </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }

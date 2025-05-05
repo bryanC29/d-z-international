@@ -8,15 +8,8 @@ export default {
   ],
   theme: {
     extend: {
-      keyframes: {
-        marquee: {
-          from: { transform: 'translateX(100%)' },
-          to: { transform: 'translateX(-100%)' },
-        },
-      },
-      animation: {
-        marquee: 'marquee 50s linear infinite',
-      },
+      keyframes: {},
+      animation: {},
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
