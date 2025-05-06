@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useAuth } from '../../app/context/authContext';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,37 +48,52 @@ const Navbar = () => {
         >
           <ul className="flex flex-col md:flex-row md:space-x-8 mt-4 md:mt-0 bg-stone-800 md:bg-stone-900 p-4 md:p-0 rounded-lg md:border-0 border border-gray-700">
             <li>
-              <Link href="/" className={navLinkClass}>
+              <Link
+                href="/"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/search" className={navLinkClass}>
-                Categories
+              <Link
+                href="/search"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Shop Now
               </Link>
             </li>
             {user && (
               <li>
-                <Link href="/cart" className={navLinkClass}>
+                <Link
+                  href="/cart"
+                  className={navLinkClass}
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Cart
                 </Link>
               </li>
             )}
             <li>
-              <Link href="/product" className={navLinkClass}>
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className={navLinkClass}>
+              <Link
+                href="/contact"
+                className={navLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Contact us
               </Link>
             </li>
 
             {!user && (
               <li>
-                <Link href="/login" className={navLinkClass}>
-                  Login <AccountCircleIcon className="md:pl-1" />
+                <Link
+                  href="/login"
+                  className={navLinkClass}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
                 </Link>
               </li>
             )}
@@ -87,21 +101,35 @@ const Navbar = () => {
             {user && (
               <>
                 <li>
-                  <Link href="/profile" className={navLinkClass}>
-                    Profile <AccountCircleIcon className="md:pl-1" />
+                  <Link
+                    href="/profile"
+                    className={navLinkClass}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
                   </Link>
                 </li>
 
                 {user.role === 'admin' && (
                   <li>
-                    <Link href="/adminDashboard" className={navLinkClass}>
+                    <Link
+                      href="/adminDashboard"
+                      className={navLinkClass}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       Admin
                     </Link>
                   </li>
                 )}
 
                 <li>
-                  <button onClick={logout} className={navLinkClass}>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className={`${navLinkClass} w-full text-left`}
+                  >
                     Logout
                   </button>
                 </li>
