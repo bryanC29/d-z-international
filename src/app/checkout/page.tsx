@@ -164,8 +164,7 @@ export default function Checkout() {
 
   useEffect(() => {
     if (!loading && !user?.token) {
-      // router.push('/login');
-      alert('Please login to continue');
+      router.push('/login');
     }
   }, [user, loading, router]);
 
@@ -174,21 +173,17 @@ export default function Checkout() {
   const cartTotal = Math.round(subtotal + delivery + tax);
 
   const handleSubmit = async () => {
-    console.log('Submitting order:', data);
-    // const res = await axios.post(
-    //   `${api}/orders`,
-    //   {
-    //     ...data,
-    //     cart: cartItems,
-    //     total: cartTotal,
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${user?.token}`,
-    //     },
-    //   }
-    // );
-    // console.log('Order response:', res.data);
+    const data = { address_id: selectedAddressIndex.toString() };
+    const res = await axios.post(`${api}/cart/checkout`, data, {
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+      },
+    });
+    if (res.status === 200) {
+      router.push('/orderplaced');
+    } else {
+      console.error('Error placing order:', res.data);
+    }
   };
 
   const handleChange = (
@@ -309,7 +304,7 @@ export default function Checkout() {
           ) : (
             <p className="text-gray-400">No saved addresses found.</p>
           )}
-          <div className="my-4 text-center">
+          <div className="my-4 p-4 text-center">
             <Link
               href="/newaddress"
               className="border-2 border-orange-600 hover:bg-orange-600 py-2 px-4 rounded m-4 text-center"
