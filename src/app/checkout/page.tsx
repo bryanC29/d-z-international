@@ -7,6 +7,7 @@ import axios from 'axios';
 import client from '@/lib/apolloClient';
 import { GET_PRODUCT_PRICE } from '@/queries/getCartItems';
 import { GET_SAVED_ADDRESSES } from '@/queries/getAddress';
+import Link from 'next/link';
 
 export default function Checkout() {
   const router = useRouter();
@@ -308,153 +309,15 @@ export default function Checkout() {
           ) : (
             <p className="text-gray-400">No saved addresses found.</p>
           )}
+          <div className="my-4 text-center">
+            <Link
+              href="/newaddress"
+              className="border-2 border-orange-600 hover:bg-orange-600 py-2 px-4 rounded m-4 text-center"
+            >
+              Add New Address
+            </Link>
+          </div>
         </div>
-
-        <form>
-          <p className="text-xl text-center my-3 border-b pb-3">
-            Shipping Address
-          </p>
-
-          <label htmlFor="fname" className={labelClass}>
-            Full Name
-          </label>
-          <input
-            type="text"
-            name="fname"
-            id="fname"
-            value={data.address.fname}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="al1" className={labelClass}>
-            Address Line 1
-          </label>
-          <input
-            type="text"
-            name="al1"
-            id="al1"
-            value={data.address.al1}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="al2" className={labelClass}>
-            Address Line 2
-          </label>
-          <input
-            type="text"
-            name="al2"
-            id="al2"
-            value={data.address.al2}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="city" className={labelClass}>
-            City
-          </label>
-          <input
-            type="text"
-            name="city"
-            id="city"
-            value={data.address.city}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="state" className={labelClass}>
-            State
-          </label>
-          <select
-            name="state"
-            id="state"
-            value={data.address.state}
-            onChange={handleAddressChange}
-            className={inputClass}
-          >
-            <option value="">Select State</option>
-            <option value="">Select State</option>
-            <option value="Andhra Pradesh">Andhra Pradesh</option>
-            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-            <option value="Assam">Assam</option>
-            <option value="Bihar">Bihar</option>
-            <option value="Chhattisgarh">Chhattisgarh</option>
-            <option value="Goa">Goa</option>
-            <option value="Gujarat">Gujarat</option>
-            <option value="Haryana">Haryana</option>
-            <option value="Himachal Pradesh">Himachal Pradesh</option>
-            <option value="Jharkhand">Jharkhand</option>
-            <option value="Karnataka">Karnataka</option>
-            <option value="Kerala">Kerala</option>
-            <option value="Madhya Pradesh">Madhya Pradesh</option>
-            <option value="Maharashtra">Maharashtra</option>
-            <option value="Manipur">Manipur</option>
-            <option value="Meghalaya">Meghalaya</option>
-            <option value="Mizoram">Mizoram</option>
-            <option value="Nagaland">Nagaland</option>
-            <option value="Odisha">Odisha</option>
-            <option value="Punjab">Punjab</option>
-            <option value="Rajasthan">Rajasthan</option>
-            <option value="Sikkim">Sikkim</option>
-            <option value="Tamil Nadu">Tamil Nadu</option>
-            <option value="Telangana">Telangana</option>
-            <option value="Tripura">Tripura</option>
-            <option value="Uttar Pradesh">Uttar Pradesh</option>
-            <option value="Uttarakhand">Uttarakhand</option>
-            <option value="West Bengal">West Bengal</option>
-            <option value="Andaman and Nicobar Islands">
-              Andaman and Nicobar Islands
-            </option>
-            <option value="Chandigarh">Chandigarh</option>
-            <option value="Dadra and Nagar Haveli and Daman and Diu">
-              Dadra and Nagar Haveli and Daman and Diu
-            </option>
-            <option value="Delhi">Delhi</option>
-            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-            <option value="Ladakh">Ladakh</option>
-            <option value="Lakshadweep">Lakshadweep</option>
-            <option value="Puducherry">Puducherry</option>
-          </select>
-
-          <label htmlFor="pin" className={labelClass}>
-            PIN Code
-          </label>
-          <input
-            type="number"
-            name="pin"
-            id="pin"
-            value={data.address.pin}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="number" className={labelClass}>
-            Contact Number
-          </label>
-          <input
-            type="text"
-            name="number"
-            id="number"
-            value={data.address.number}
-            onChange={handleAddressChange}
-            className={inputClass}
-          />
-
-          <label htmlFor="type" className={labelClass}>
-            Address Type
-          </label>
-          <select
-            name="type"
-            id="type"
-            value={data.address.type}
-            onChange={handleAddressChange}
-            className={inputClass}
-          >
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-          </select>
-        </form>
       </div>
 
       <div className="w-full md:w-1/5 bg-black text-white rounded-xl p-6 my-4">

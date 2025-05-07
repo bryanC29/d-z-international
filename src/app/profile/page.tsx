@@ -1,19 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useAuth } from '../context/authContext';
 import client from '@/lib/apolloClient';
 import { GET_USER } from '@/queries/getUser';
 import Image from 'next/image';
 import Link from 'next/link';
+import { DeleteForeverTwoTone } from '@mui/icons-material';
+import axios from 'axios';
 
 export default function Profile() {
   const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
   const btnClass =
     'border-2 border-orange-600 hover:bg-orange-600 py-2 px-4 rounded m-2 md:w-full text-center';
+  const [manageSavedAddress, setManageSavedAddress] = useState(false);
+  const api = process.env.NEXT_PUBLIC_API || 'localhost';
 
   useEffect(() => {
     if (!authLoading && !user?.token) router.push('/login');
@@ -31,6 +35,24 @@ export default function Profile() {
     },
     skip: !user?.token || !user?.uid,
   });
+
+  const handleRemoveAddress = async (index: number) => {
+    try {
+      const res = await axios.delete(`${api}/user/address/${index}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      if (res.status === 200) {
+        setManageSavedAddress(false);
+        window.location.reload();
+      } else {
+        console.error('Failed to remove address:', res.data);
+      }
+    } catch (err) {
+      console.error('Error removing address:', err);
+    }
+  };
 
   if (!user?.token || loading)
     return <p className="text-white p-10">Loading...</p>;
@@ -90,10 +112,18 @@ export default function Profile() {
             ) : (
               profile.addressDetails.map((addr: any, idx: number) => (
                 <div key={idx} className="border m-2 p-2 rounded-md">
-                  <strong>
-                    {addr.type.substring(0, 1).toUpperCase() +
-                      addr.type.substring(1) || 'Address'}
-                  </strong>
+                  <p className="flex justify-between">
+                    <strong>
+                      {addr.type.substring(0, 1).toUpperCase() +
+                        addr.type.substring(1) || 'Address'}{' '}
+                      - {addr.name}
+                    </strong>
+                    {manageSavedAddress && (
+                      <span onClick={() => handleRemoveAddress(idx)}>
+                        <DeleteForeverTwoTone className="text-red-600 cursor-pointer" />
+                      </span>
+                    )}
+                  </p>
                   <p className="text-gray-400">
                     Address:
                     <span className="text-white">
@@ -138,8 +168,25 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col md:flex-row">
-            <button className={btnClass}>Manage Saved Addresses</button>
-            <button className={btnClass}>Add New Address</button>
+            {!manageSavedAddress && (
+              <button
+                className={btnClass}
+                onClick={() => setManageSavedAddress(true)}
+              >
+                Manage Saved Addresses
+              </button>
+            )}
+            {manageSavedAddress && (
+              <button
+                className={btnClass}
+                onClick={() => setManageSavedAddress(false)}
+              >
+                Done
+              </button>
+            )}
+            <Link href="/newaddress" className={btnClass}>
+              Add New Address
+            </Link>
           </div>
         </div>
 
@@ -147,7 +194,9 @@ export default function Profile() {
           <p className="text-xl pb-1 border-b mb-2">Account Action</p>
           <div className="md:flex md:flex-row">
             <button className={`${btnClass}`}>Reset Password</button>
-            <button className={`${btnClass}`}>Logout</button>
+            <button className={`${btnClass}`} onClick={logout}>
+              Logout
+            </button>
           </div>
         </div>
       </div>

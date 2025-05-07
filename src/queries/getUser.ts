@@ -9,6 +9,7 @@ export const GET_USER = gql`
       number
       profile_url
       addressDetails {
+        name
         line1
         line2
         city
