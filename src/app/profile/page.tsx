@@ -8,7 +8,7 @@ import client from '@/lib/apolloClient';
 import { GET_USER } from '@/queries/getUser';
 import Image from 'next/image';
 import Link from 'next/link';
-import { DeleteForeverTwoTone } from '@mui/icons-material';
+import { DeleteForeverTwoTone, Edit } from '@mui/icons-material';
 import axios from 'axios';
 
 export default function Profile() {
@@ -18,6 +18,9 @@ export default function Profile() {
     'border-2 border-orange-600 hover:bg-orange-600 py-2 px-4 rounded m-2 md:w-full text-center';
   const [manageSavedAddress, setManageSavedAddress] = useState(false);
   const api = process.env.NEXT_PUBLIC_API || 'localhost';
+  const [isEditingNumber, setIsEditingNumber] = useState(false);
+  const [editedNumber, setEditedNumber] = useState('');
+  const [currentNumber, setCurrentNumber] = useState('');
 
   useEffect(() => {
     if (!authLoading && !user?.token) router.push('/login');
@@ -36,6 +39,12 @@ export default function Profile() {
     skip: !user?.token || !user?.uid,
   });
 
+  useEffect(() => {
+    if (data?.user?.number) {
+      setCurrentNumber(data.user.number);
+    }
+  }, [data]);
+
   const handleRemoveAddress = async (index: number) => {
     try {
       const res = await axios.delete(`${api}/user/address/${index}`, {
@@ -51,6 +60,29 @@ export default function Profile() {
       }
     } catch (err) {
       console.error('Error removing address:', err);
+    }
+  };
+
+  const handleNumberChange = async () => {
+    try {
+      const res = await axios.patch(
+        `${api}/user`,
+        { number: editedNumber },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        setCurrentNumber(editedNumber);
+        setIsEditingNumber(false);
+        window.location.reload();
+      } else {
+        console.error('Failed to update number:', res.data);
+      }
+    } catch (err) {
+      console.error('Error updating number:', err);
     }
   };
 
@@ -98,9 +130,44 @@ export default function Profile() {
           <p className="text-gray-400">
             Email address: <span className="text-white">{profile.email}</span>
           </p>
-          <p className="text-gray-400">
+          <p className="text-gray-400 flex items-center flex-wrap">
             Primary contact number:{' '}
-            <span className="text-white">{profile.number}</span>
+            {!isEditingNumber ? (
+              <>
+                <span className="text-white ms-2">{currentNumber}</span>
+                <Edit
+                  className="text-white text-sm cursor-pointer hover:text-neutral-400 ms-2"
+                  style={{ fontSize: 20 }}
+                  onClick={() => {
+                    setEditedNumber(currentNumber);
+                    setIsEditingNumber(true);
+                  }}
+                />
+              </>
+            ) : (
+              <div className="flex flex-wrap items-center md:ms-2">
+                <input
+                  type="text"
+                  className="bg-black text-white border p-1 rounded"
+                  value={editedNumber}
+                  onChange={(e) => setEditedNumber(e.target.value)}
+                />
+                <div>
+                  <button
+                    className="bg-orange-400 hover:bg-orange-600 px-2 py-1 rounded text-white m-2"
+                    onClick={handleNumberChange}
+                  >
+                    Done
+                  </button>
+                  <button
+                    className="bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded text-white m-2"
+                    onClick={() => setIsEditingNumber(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </p>
         </div>
 
