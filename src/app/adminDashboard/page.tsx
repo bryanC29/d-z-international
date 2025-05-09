@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function adminDashboard() {
   const [selectedStatus, setSelectedStatus] = useState('All');
@@ -11,7 +12,6 @@ export default function adminDashboard() {
   const [orderList, setOrderList] = useState<
     {
       id: number;
-      uid: string;
       status: string;
       tracking_status: string;
       createdAt: string;
@@ -23,7 +23,11 @@ export default function adminDashboard() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`${api}/order`);
+        const res = await axios.get(`${api}/admin/orders`, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        });
         setOrderList(res.data[0]);
       } catch (err) {
         console.error(err);
@@ -105,10 +109,10 @@ export default function adminDashboard() {
         <thead className="bg-gray-100">
           <tr>
             <th className="border px-4 py-2 text-left">Order ID</th>
-            <th className="border px-4 py-2 text-left">Customer</th>
+            {/* <th className="border px-4 py-2 text-left">Customer</th> */}
             {/* <th className="border px-4 py-2 text-left">Total</th> */}
-            <th className="border px-4 py-2 text-left">Tracking Status</th>
             <th className="border px-4 py-2 text-left">Status</th>
+            <th className="border px-4 py-2 text-left">Tracking Status</th>
             <th className="border px-4 py-2 text-left">Date</th>
             <th className="border px-4 py-2 text-left">Actions</th>
           </tr>
@@ -117,20 +121,20 @@ export default function adminDashboard() {
           {filteredOrders.map((order, index) => (
             <tr key={index} className="hover:bg-gray-50">
               <td className="border px-4 py-2">{order.id ?? 'NA'}</td>
-              <td className="border px-4 py-2">{order.uid}</td>
+              {/*<td className="border px-4 py-2">{order.uid}</td>*/}
               {/* <td className="border px-4 py-2">{order.total}</td> */}
-              <td className="border px-4 py-2">{order.tracking_status}</td>
               <td className="border px-4 py-2">{order.status}</td>
+              <td className="border px-4 py-2">{order.tracking_status}</td>
               <td className="border px-4 py-2">
                 {order.createdAt.substring(0, 10)}
               </td>
               <td className="border px-4 py-2">
-                <button
+                <Link
                   className="text-blue-600 hover:underline"
-                  onClick={() => alert(`Viewing order ${order.id}`)}
+                  href={`/adminDashboard/order/${order.id}`}
                 >
                   View
-                </button>
+                </Link>
               </td>
             </tr>
           ))}
