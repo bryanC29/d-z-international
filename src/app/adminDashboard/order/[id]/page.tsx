@@ -293,7 +293,20 @@ export default function OrderDetails({ params }: Props) {
           ))}
         </tbody>
       </table>
-      <PDFGenerator contentId="printable-content" />
+      {orderDetails && userDetails && address && productDetails.length > 0 && (
+        <PDFGenerator
+          orderId={orderDetails.order.id.toString()}
+          userDetails={{
+            name: userDetails.name,
+            number: Number(address.number),
+            alternateNumber: Number(address.alternate_number),
+            address: `${address.line1}, ${address.line2}, ${address.city}, ${address.state}, ${address.country}, ${address.code}`,
+            email: userDetails.email,
+          }}
+          total={total}
+          productDetails={productDetails}
+        />
+      )}
     </div>
   );
 }
