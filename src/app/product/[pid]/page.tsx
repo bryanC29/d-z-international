@@ -137,9 +137,12 @@ export default function ProductPage({ params }: Props) {
               </button>
             )}
             {!addedToCart && (
-              <button className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2">
+              <Link
+                href={`/checkout?pid=${pid}`}
+                className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2 text-center"
+              >
                 Buy Now
-              </button>
+              </Link>
             )}
             {addedToCart && (
               <Link
