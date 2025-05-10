@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/authContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import client from '@/lib/apolloClient';
 import { GET_PRODUCT_PRICE } from '@/queries/getCartItems';
@@ -13,7 +13,8 @@ export default function Checkout() {
   const router = useRouter();
   const api = process.env.NEXT_PUBLIC_API;
   const { user, loading } = useAuth();
-
+  const searchParams = useSearchParams();
+  const pid = searchParams.get('pid');
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -57,16 +58,21 @@ export default function Checkout() {
 
   useEffect(() => {
     const getCartItems = async () => {
-      try {
-        const res = await axios.get(`${api}/cart`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
-        setCartItems(res.data);
-        if (res.data.length === 0) router.push('/');
-      } catch (err) {
-        console.error(err);
+      if (pid) {
+        const cartItem = [{ product_id: pid, quantity: 1 }];
+        setCartItems(cartItem);
+      } else {
+        try {
+          const res = await axios.get(`${api}/cart`, {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          });
+          setCartItems(res.data);
+          if (res.data.length === 0) router.push('/');
+        } catch (err) {
+          console.error(err);
+        }
       }
     };
     if (user?.token) {
@@ -173,13 +179,22 @@ export default function Checkout() {
   const cartTotal = Math.round(subtotal + delivery + tax);
 
   const handleSubmit = async () => {
-    const data = { address_id: selectedAddressIndex.toString() };
+    let data = {};
+    if (pid) {
+      data = {
+        address_id: selectedAddressIndex.toString(),
+        pid,
+        quantity: '1',
+      };
+    } else {
+      data = { address_id: selectedAddressIndex.toString() };
+    }
     const res = await axios.post(`${api}/cart/checkout`, data, {
       headers: {
         Authorization: `Bearer ${user?.token}`,
       },
     });
-    if (res.status === 200) {
+    if (res.status === 200 || res.status === 201) {
       router.push('/orderplaced');
     } else {
       console.error('Error placing order:', res.data);
