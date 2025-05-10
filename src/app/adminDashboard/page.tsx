@@ -58,17 +58,17 @@ export default function adminDashboard() {
   const stats = {
     totalOrders: orderList.length,
     // totalSales: `$${totalSales.toFixed(2)}`,
-    refunded: orderList.filter((o) => o.status === 'Refunded').length,
-    returned: orderList.filter((o) => o.status === 'Returned').length,
-    delivered: orderList.filter((o) => o.status === 'Delivered').length,
+    refunded: orderList.filter((o) => o.status === 'refunded').length,
+    returned: orderList.filter((o) => o.status === 'returned').length,
+    delivered: orderList.filter((o) => o.status === 'delivered').length,
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-black text-white">
       <h1 className="text-2xl font-bold mb-4">Orders Management</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white border rounded p-4">
+        <div className="border rounded p-4">
           <h2 className="text-sm text-gray-500">Total Orders</h2>
           <p className="text-xl font-semibold">{stats.totalOrders}</p>
         </div>
@@ -76,15 +76,15 @@ export default function adminDashboard() {
           <h2 className="text-sm text-gray-500">Total Sales</h2>
           <p className="text-xl font-semibold">{stats.totalSales}</p>
         </div> */}
-        <div className="bg-white border rounded p-4">
+        <div className="border rounded p-4">
           <h2 className="text-sm text-gray-500">Delivered</h2>
           <p className="text-xl font-semibold">{stats.delivered}</p>
         </div>
-        <div className="bg-white border rounded p-4">
+        <div className="border rounded p-4">
           <h2 className="text-sm text-gray-500">Refunded</h2>
           <p className="text-xl font-semibold">{stats.refunded}</p>
         </div>
-        <div className="bg-white border rounded p-4">
+        <div className="border rounded p-4">
           <h2 className="text-sm text-gray-500">Returned</h2>
           <p className="text-xl font-semibold">{stats.returned}</p>
         </div>
@@ -93,7 +93,7 @@ export default function adminDashboard() {
       <div className="mb-4">
         <label className="mr-2 font-semibold">Filter by Status:</label>
         <select
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1 bg-black"
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
         >
@@ -105,8 +105,8 @@ export default function adminDashboard() {
         </select>
       </div>
 
-      <table className="w-full table-auto border border-gray-300 overflow-x-scroll  ">
-        <thead className="bg-gray-100">
+      <table className="w-full table-fixed border border-gray-400 overflow-x-scroll  ">
+        <thead className="bg-gray-800">
           <tr>
             <th className="border px-4 py-2 text-left">Order ID</th>
             {/* <th className="border px-4 py-2 text-left">Customer</th> */}
@@ -119,7 +119,7 @@ export default function adminDashboard() {
         </thead>
         <tbody>
           {filteredOrders.map((order, index) => (
-            <tr key={index} className="hover:bg-gray-50">
+            <tr key={index} className="hover:bg-neutral-700">
               <td className="border px-4 py-2">{order.id ?? 'NA'}</td>
               {/*<td className="border px-4 py-2">{order.uid}</td>*/}
               {/* <td className="border px-4 py-2">{order.total}</td> */}

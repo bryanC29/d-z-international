@@ -196,19 +196,6 @@ export default function Checkout() {
     }));
   };
 
-  const handleAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setData((prev) => ({
-      ...prev,
-      address: {
-        ...prev.address,
-        [name]: value,
-      },
-    }));
-  };
-
   const inputClass = 'border border-black rounded w-full text-black p-2';
   const labelClass = 'block pt-4 pb-1';
 
