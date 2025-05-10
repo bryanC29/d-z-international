@@ -216,7 +216,7 @@ export default function Checkout() {
 
   return (
     <div className="flex flex-col-reverse md:flex-row bg-gray-900 w-full p-6">
-      <div className="w-full md:w-3/4 bg-black text-white rounded-xl py-4 px-6 my-4 pb-6">
+      <div className="w-full md:w-3/4 bg-black text-white rounded-xl py-4 px-6 my-4 mx-2 pb-6">
         <form>
           <p className="text-xl text-center my-3 border-b pb-3">
             Contact Information
@@ -317,7 +317,7 @@ export default function Checkout() {
         </div>
       </div>
 
-      <div className="w-full md:w-1/5 bg-black text-white rounded-xl p-6 my-4">
+      <div className="w-full md:w-1/5 bg-black text-white rounded-xl p-6 my-4 mx-2">
         <div className="text-xl text-center border-b p-2">Payment method</div>
         <div className="m-6 bg-gray-800 hover:bg-gray-700 inline-block px-4 py-2 cursor-pointer border-2 border-orange-500 rounded-lg shadow-md shadow-orange-600">
           COD - Cash on Delivery
