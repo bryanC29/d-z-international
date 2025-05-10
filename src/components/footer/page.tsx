@@ -18,7 +18,7 @@ const Footer = () => {
                 width={60}
                 height={40}
               />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
                 Dark & Dusky
               </span>
             </Link>
