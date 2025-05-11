@@ -12,6 +12,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/app/context/authContext';
 import { useRouter } from 'next/navigation';
+import { KeyboardReturn, LocalShipping, Security } from '@mui/icons-material';
 
 type Props = {
   params: Promise<{ pid: string }>;
@@ -152,6 +153,20 @@ export default function ProductPage({ params }: Props) {
                 View Cart
               </Link>
             )}
+          </div>
+          <div className="flex flex-col md:flex-row w-full justify-stretch items-center md:pt-4 pt-2">
+            <div className="w-full border rounded-md bg-black p-3 m-3">
+              <LocalShipping className="me-3" />
+              COD Available
+            </div>
+            <div className="w-full border rounded-md bg-black p-3 m-3">
+              <Security className="me-3" />
+              Trusted Security
+            </div>
+            <div className="w-full border rounded-md bg-black p-3 m-3">
+              <KeyboardReturn className="me-3" />
+              Easy Refund
+            </div>
           </div>
         </div>
       </div>

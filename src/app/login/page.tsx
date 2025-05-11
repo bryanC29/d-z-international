@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Carousel_login from '@/components/carousel_login/page';
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 type LoginResponse = {
   message: string;
@@ -119,11 +120,11 @@ export default function LoginPage() {
                 required
               />
               <button
-                className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
+                className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white text-white"
                 type="button"
                 onClick={() => setVisible(!visible)}
               >
-                {visible ? '🙈' : '👁️'}
+                {visible ? <VisibilityOff /> : <Visibility />}
               </button>
             </div>
 

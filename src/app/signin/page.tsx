@@ -12,6 +12,7 @@ import {
 } from '@/util/validate/validate';
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -184,15 +185,14 @@ export default function RegisterPage() {
                 required
               />
               <button
-                className="bg-slate-600 hover:bg-slate-800 block mb-3 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
+                className="bg-slate-600 hover:bg-slate-800 block mb-3 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white text-white"
                 type="button"
                 onClick={() => setVisible(!visible)}
               >
-                {visible ? '🙈' : '👁️'}
+                {visible ? <VisibilityOff /> : <Visibility />}
               </button>
             </div>
 
-            {/* Confirm Password */}
             <label
               className="block text-lg text-white"
               htmlFor="confirmPassword"
@@ -212,11 +212,11 @@ export default function RegisterPage() {
                 required
               />
               <button
-                className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white"
+                className="bg-slate-600 hover:bg-slate-800 block mb-5 border-t-2 border-r-2 border-b-2 rounded-r-md p-2 w-10 border-white text-white"
                 type="button"
                 onClick={() => setVisibleConfirm(!visibleConfirm)}
               >
-                {visibleConfirm ? '🙈' : '👁️'}
+                {visibleConfirm ? <VisibilityOff /> : <Visibility />}
               </button>
             </div>
 
