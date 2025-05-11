@@ -1,145 +1,41 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import {
+  ShoppingCartTwoTone,
+  KeyboardReturnTwoTone,
+} from '@mui/icons-material';
 
 export default function adminDashboard() {
-  const [selectedStatus, setSelectedStatus] = useState('All');
   const { user, loading } = useAuth();
-  const [orderList, setOrderList] = useState<
-    {
-      id: number;
-      status: string;
-      tracking_status: string;
-      createdAt: string;
-    }[]
-  >([]);
-  const api = process.env.NEXT_PUBLIC_API;
   const router = useRouter();
+  const btnClass =
+    'p-3 border rounded-md hover:bg-white hover:text-black m-3 flex flex-col w-full text-center justify-center items-center';
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await axios.get(`${api}/admin/orders`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
-        setOrderList(res.data[0]);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    if (!loading && user?.token && user?.role === 'admin') {
-      fetchOrders();
-    } else {
-      if (!loading && !user?.token) {
-        router.push('/login');
-      }
+    if (!loading && !user?.token && user?.role != 'admin') {
+      router.push('/login');
     }
-  }, [loading, user?.token, user?.role, api, router]);
-
-  const filteredOrders =
-    selectedStatus === 'All'
-      ? orderList
-      : orderList.filter((order) => order.status === selectedStatus);
-
-  const statuses = ['All', 'pending', 'confirmed', 'delivered', 'canceled'];
-
-  // const totalSales = orderList.reduce((sum, order) => {
-  //   const numeric = parseFloat(order.total.replace('$', ''));
-  //   return sum + (isNaN(numeric) ? 0 : numeric);
-  // }, 0);
-
-  const stats = {
-    totalOrders: orderList.length,
-    // totalSales: `$${totalSales.toFixed(2)}`,
-    refunded: orderList.filter((o) => o.status === 'refunded').length,
-    returned: orderList.filter((o) => o.status === 'returned').length,
-    delivered: orderList.filter((o) => o.status === 'delivered').length,
-  };
+  }, [loading, user?.token, user?.role]);
 
   return (
     <div className="p-6 bg-black text-white">
-      <h1 className="text-2xl font-bold mb-4">Orders Management</h1>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="border rounded p-4">
-          <h2 className="text-sm text-gray-500">Total Orders</h2>
-          <p className="text-xl font-semibold">{stats.totalOrders}</p>
-        </div>
-        {/* <div className="bg-white border rounded p-4">
-          <h2 className="text-sm text-gray-500">Total Sales</h2>
-          <p className="text-xl font-semibold">{stats.totalSales}</p>
-        </div> */}
-        <div className="border rounded p-4">
-          <h2 className="text-sm text-gray-500">Delivered</h2>
-          <p className="text-xl font-semibold">{stats.delivered}</p>
-        </div>
-        <div className="border rounded p-4">
-          <h2 className="text-sm text-gray-500">Refunded</h2>
-          <p className="text-xl font-semibold">{stats.refunded}</p>
-        </div>
-        <div className="border rounded p-4">
-          <h2 className="text-sm text-gray-500">Returned</h2>
-          <p className="text-xl font-semibold">{stats.returned}</p>
-        </div>
+      <h1 className="text-2xl text-center my-4 mx-2">
+        Welcome to Admin Dashboard
+      </h1>
+      <div className="flex flex-col md:flex-row w-full">
+        <Link href="/adminDashboard/order" className={btnClass}>
+          <ShoppingCartTwoTone sx={{ fontSize: 50 }} />
+          View Orders
+        </Link>
+        <Link href="/adminDashboard/return" className={btnClass}>
+          <KeyboardReturnTwoTone sx={{ fontSize: 50 }} />
+          View Returns
+        </Link>
       </div>
-
-      <div className="mb-4">
-        <label className="mr-2 font-semibold">Filter by Status:</label>
-        <select
-          className="border rounded px-2 py-1 bg-black"
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-        >
-          {statuses.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <table className="w-full table-fixed border border-gray-400 overflow-x-scroll  ">
-        <thead className="bg-gray-800">
-          <tr>
-            <th className="border px-4 py-2 text-left">Order ID</th>
-            {/* <th className="border px-4 py-2 text-left">Customer</th> */}
-            {/* <th className="border px-4 py-2 text-left">Total</th> */}
-            <th className="border px-4 py-2 text-left">Status</th>
-            <th className="border px-4 py-2 text-left">Tracking Status</th>
-            <th className="border px-4 py-2 text-left">Date</th>
-            <th className="border px-4 py-2 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredOrders.map((order, index) => (
-            <tr key={index} className="hover:bg-neutral-700">
-              <td className="border px-4 py-2">{order.id ?? 'NA'}</td>
-              {/*<td className="border px-4 py-2">{order.uid}</td>*/}
-              {/* <td className="border px-4 py-2">{order.total}</td> */}
-              <td className="border px-4 py-2">{order.status}</td>
-              <td className="border px-4 py-2">{order.tracking_status}</td>
-              <td className="border px-4 py-2">
-                {order.createdAt.substring(0, 10)}
-              </td>
-              <td className="border px-4 py-2">
-                <Link
-                  className="text-blue-600 hover:underline"
-                  href={`/adminDashboard/order/${order.id}`}
-                >
-                  View
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }
