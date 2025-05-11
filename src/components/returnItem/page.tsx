@@ -74,7 +74,8 @@ export default function ReturnItem({
           </p>
           <p className="p-2 m-2 text-center border rounded-md">
             Tracking Status:{' '}
-            {trackingStatus.substring(0, 1) + trackingStatus.substring(1)}
+            {trackingStatus.substring(0, 1).toUpperCase() +
+              trackingStatus.substring(1)}
           </p>
         </div>
       </div>

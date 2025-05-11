@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import client from '@/lib/apolloClient';
 import axios from 'axios';
 import { useAuth } from '@/app/context/authContext';
+import { useRouter } from 'next/navigation';
 
 interface OrderProps {
   id: number;
@@ -22,6 +23,7 @@ interface OrderItems {
 }
 
 interface ProductDetails {
+  id: string;
   description: string;
   media: string[];
   name: string;
@@ -37,10 +39,9 @@ export default function Order({
 }: OrderProps) {
   const api = process.env.NEXT_PUBLIC_API;
   const { user } = useAuth();
-
+  const router = useRouter();
   const [orderItems, setOrderItems] = useState<OrderItems[]>([]);
   const [products, setProducts] = useState<ProductDetails[]>([]);
-  const [imgSrc, setImgSrc] = useState<string | undefined>(undefined);
   const [fallbackImgSrcs, setFallbackImgSrcs] = useState<
     Record<string, string>
   >({});
@@ -56,11 +57,11 @@ export default function Order({
         console.log('Order:', res.data);
         setOrderItems(res.data.orderItem);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error('Error fetching order items:', error);
       }
     };
     fetchProducts();
-  }, [axios, api, id, user?.token]);
+  }, [api, id, user?.token]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -72,6 +73,7 @@ export default function Order({
           });
           return {
             ...data.product,
+            id: item.product_id,
             quantity: item.quantity,
           };
         });
@@ -87,6 +89,34 @@ export default function Order({
       fetchProductDetails();
     }
   }, [orderItems]);
+
+  const isReturnEligible = () => {
+    const orderDate = new Date(createdAt);
+    const today = new Date();
+    const diffInTime = today.getTime() - orderDate.getTime();
+    const diffInDays = diffInTime / (1000 * 3600 * 24);
+    return (
+      status.toLowerCase() === 'delivered' &&
+      trackingStatus.toLowerCase() === 'delivered' &&
+      diffInDays <= 15
+    );
+  };
+
+  const handleReturn = async (productId: string) => {
+    const data = { orderId: id.toString(), productItemId: productId };
+    try {
+      const res = await axios.post(`${api}/return`, data, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      if (res.status === 201) {
+        router.push('/return');
+      }
+    } catch (err) {
+      console.error('Error filling return: ', err);
+    }
+  };
 
   return (
     <div className="border rounded-lg p-2 md:mx-6 mx-5 md:my-2 my-5 text-white bg-gray-950">
@@ -125,6 +155,14 @@ export default function Order({
               <p>Price: &#8377;{product.price}</p>
               <p>Quantity: {product.quantity}</p>
             </div>
+            {isReturnEligible() && (
+              <button
+                onClick={() => handleReturn(product.id)}
+                className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+              >
+                Return
+              </button>
+            )}
           </div>
         </div>
       ))}
