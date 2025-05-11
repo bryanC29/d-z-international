@@ -58,7 +58,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/search"
+                href="/product"
                 className={navLinkClass}
                 onClick={() => setIsMenuOpen(false)}
               >

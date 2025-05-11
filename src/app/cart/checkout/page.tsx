@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/authContext';
+import { useAuth } from '../../context/authContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import client from '@/lib/apolloClient';

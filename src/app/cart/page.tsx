@@ -129,7 +129,7 @@ export default function Cart() {
         </div>
 
         <Link
-          href={isCartEmpty ? '#' : '/checkout'}
+          href={isCartEmpty ? '#' : '/cart/checkout'}
           className={`text-white border-2 px-4 py-3 font-bold w-full text-center inline-block md:sticky md:top-4 rounded-md
     ${
       isCartEmpty

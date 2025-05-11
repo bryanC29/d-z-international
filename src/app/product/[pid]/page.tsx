@@ -138,7 +138,7 @@ export default function ProductPage({ params }: Props) {
             )}
             {!addedToCart && (
               <Link
-                href={`/checkout?pid=${pid}`}
+                href={`/cart/checkout?pid=${pid}`}
                 className="md:w-full m-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2 text-center"
               >
                 Buy Now
@@ -188,9 +188,12 @@ export default function ProductPage({ params }: Props) {
             </button>
           )}
           {!addedToCart && (
-            <button className="md:w-full md:m-0 my-4 mt-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2 cursor-pointer">
+            <Link
+              href={`/cart/checkout?pid=${pid}`}
+              className="md:w-full text-center md:m-0 my-4 mt-2 bg-orange-400 hover:bg-orange-500 text-black rounded-md p-2 cursor-pointer"
+            >
               Buy Now
-            </button>
+            </Link>
           )}
           {addedToCart && (
             <Link
@@ -202,7 +205,7 @@ export default function ProductPage({ params }: Props) {
           )}
         </div>
         <Link
-          href="/search"
+          href="/product"
           className="text-lg font-semibold text-center bg-zinc-600 hover:bg-zinc-700 p-3 rounded-md md:my-4 inline-block w-full"
         >
           Show all products

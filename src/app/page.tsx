@@ -117,7 +117,7 @@ export default function Home() {
           Top Categories
         </p>
         <div className="flex justify-around flex-wrap">
-          <Link href="/search" className="m-6">
+          <Link href="/product" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -127,7 +127,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/search" className="m-6">
+          <Link href="/product" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -137,7 +137,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/search" className="m-6">
+          <Link href="/product" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -147,7 +147,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/search" className="m-6">
+          <Link href="/product" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -157,7 +157,7 @@ export default function Home() {
             />
             <p className="text-center text-lg">Belts</p>
           </Link>
-          <Link href="/search" className="m-6">
+          <Link href="/product" className="m-6">
             <Image
               className="rounded-full mb-2 border-[0.3rem] border-white"
               src="/belt2-5.jpg"
@@ -196,7 +196,7 @@ export default function Home() {
             <p className="text-lg my-4">
               Starting @ <span className="bg-red-600">Rs. 199</span>
             </p>
-            <Link href="/search">
+            <Link href="/product">
               <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black w-full md:w-max text-center">
                 Shop now
               </button>
@@ -225,7 +225,7 @@ export default function Home() {
             <p className="text-lg my-4">
               Starting @ <span className="bg-red-600">Rs. 199</span>
             </p>
-            <Link href="/search">
+            <Link href="/product">
               <button className="p-2 border border-white rounded-md transition hover:bg-white hover:text-black w-full md:w-max text-center">
                 Shop now
               </button>

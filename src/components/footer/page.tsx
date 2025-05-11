@@ -36,17 +36,17 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link href="/search" className="hover:underline">
+                  <Link href="/product" className="hover:underline">
                     All Products
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href="/search" className="hover:underline">
+                  <Link href="/product" className="hover:underline">
                     Women's
                   </Link>
                 </li>
                 <li>
-                  <Link href="/search" className="hover:underline">
+                  <Link href="/product" className="hover:underline">
                     Men's
                   </Link>
                 </li>
