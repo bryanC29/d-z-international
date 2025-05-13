@@ -8,8 +8,27 @@ import client from '@/lib/apolloClient';
 import { GET_PRODUCT_PRICE } from '@/queries/getCartItems';
 import { GET_SAVED_ADDRESSES } from '@/queries/getAddress';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default function Checkout() {
+interface CartItem {
+  product_id: string;
+  quantity: number;
+}
+
+interface Address {
+  type: string;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  country: string;
+  code: string;
+  number: string;
+  alternate_number?: string;
+  weekend_availability?: boolean;
+}
+
+function CheckoutClient() {
   const router = useRouter();
   const api = process.env.NEXT_PUBLIC_API;
   const { user, loading } = useAuth();
@@ -31,28 +50,9 @@ export default function Checkout() {
     },
   });
 
-  interface CartItem {
-    product_id: string;
-    quantity: number;
-  }
-
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState(0);
   const [pricesMap, setPricesMap] = useState<Record<string, number>>({});
-
-  interface Address {
-    type: string;
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    country: string;
-    code: string;
-    number: string;
-    alternate_number?: string;
-    weekend_availability?: boolean;
-  }
-
   const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
 
@@ -78,7 +78,7 @@ export default function Checkout() {
     if (user?.token) {
       getCartItems();
     }
-  }, [user?.token, api]);
+  }, [user?.token, api, pid, router]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -179,25 +179,29 @@ export default function Checkout() {
   const cartTotal = Math.round(subtotal + delivery + tax);
 
   const handleSubmit = async () => {
-    let data = {};
+    let orderData = {};
     if (pid) {
-      data = {
+      orderData = {
         address_id: selectedAddressIndex.toString(),
         pid,
         quantity: '1',
       };
     } else {
-      data = { address_id: selectedAddressIndex.toString() };
+      orderData = { address_id: selectedAddressIndex.toString() };
     }
-    const res = await axios.post(`${api}/cart/checkout`, data, {
-      headers: {
-        Authorization: `Bearer ${user?.token}`,
-      },
-    });
-    if (res.status === 200 || res.status === 201) {
-      router.push('/orderplaced');
-    } else {
-      console.error('Error placing order:', res.data);
+    try {
+      const res = await axios.post(`${api}/cart/checkout`, orderData, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      if (res.status === 200 || res.status === 201) {
+        router.push('/orderplaced');
+      } else {
+        console.error('Error placing order:', res.data);
+      }
+    } catch (error: any) {
+      console.error('Error placing order:', error);
     }
   };
 
@@ -353,5 +357,13 @@ export default function Checkout() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function Checkout() {
+  return (
+    <Suspense fallback={<div>Loading checkout...</div>}>
+      <CheckoutClient />
+    </Suspense>
   );
 }
